@@ -1,4 +1,4 @@
-require "./toy_object"
+require_relative "../toy_object"
 
 require "minitest/autorun"
 
