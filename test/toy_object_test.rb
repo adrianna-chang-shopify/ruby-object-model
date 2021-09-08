@@ -1,6 +1,5 @@
-require_relative "../toy_object"
-
-require "minitest/autorun"
+require "test_helper"
+require "toy_object"
 
 describe ToyObject do
   before do
