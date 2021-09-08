@@ -32,7 +32,6 @@ describe ToyObject do
 
     specify "reading an unset instance variable returns nil" do
       assert_nil @toy_object.toy_instance_variable_get(:@foo)
-
     end
   end
 
