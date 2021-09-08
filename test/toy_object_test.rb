@@ -6,55 +6,64 @@ describe ToyObject do
     @toy_object = ToyObject.new
   end
 
-  it "can get and set an instance variable with symbol" do
-    @toy_object.toy_instance_variable_set(:@foo, :bar)
-    assert_equal :bar, @toy_object.toy_instance_variable_get(:@foo)
+  describe "accessing instance variables" do
+    specify "reading and writing with a Symbol name" do
+      @toy_object.toy_instance_variable_set(:@foo, :bar)
+      assert_equal :bar, @toy_object.toy_instance_variable_get(:@foo)
+  
+      @toy_object.toy_instance_variable_set(:@foo, :baz)
+      assert_equal :baz, @toy_object.toy_instance_variable_get(:@foo)
+    end
 
-    @toy_object.toy_instance_variable_set(:@foo, :baz)
-    assert_equal :baz, @toy_object.toy_instance_variable_get(:@foo)
+    specify "reading and writing with a String name" do
+      @toy_object.toy_instance_variable_set("@foo", :bar)
+      assert_equal :bar, @toy_object.toy_instance_variable_get("@foo")
+    end
+
+    specify "reading with a Symbol and writing with a String name" do
+      @toy_object.toy_instance_variable_set("@foo", :bar)
+      assert_equal :bar, @toy_object.toy_instance_variable_get(:@foo)
+    end
+
+    specify "reading with a String and writing with a Symbol name" do
+      @toy_object.toy_instance_variable_set(:@foo, :bar)
+      assert_equal :bar, @toy_object.toy_instance_variable_get("@foo")
+    end
+
+    specify "reading an unset instance variable returns nil" do
+      assert_nil @toy_object.toy_instance_variable_get(:@foo)
+
+    end
   end
 
-  it "can get and set an instance variable with string" do
-    @toy_object.toy_instance_variable_set("@foo", :bar)
-    assert_equal :bar, @toy_object.toy_instance_variable_get("@foo")
+  describe "#toy_instance_variables" do
+    it "returns the names of existing instance variables" do
+      @toy_object.toy_instance_variable_set(:@bar, :foo)
+      @toy_object.toy_instance_variable_set(:@baz, :foo)
+  
+      assert_equal [:@bar, :@baz], @toy_object.toy_instance_variables
+    end
   end
 
-  it "can set an instance variable with string and get with symbol" do
-    @toy_object.toy_instance_variable_set("@foo", :bar)
-    assert_equal :bar, @toy_object.toy_instance_variable_get(:@foo)
+  describe "#toy_instance_variable_defined?" do
+    it "returns true if instance variable is set" do
+      @toy_object.toy_instance_variable_set(:@bar, :foo)
+      assert @toy_object.toy_instance_variable_defined?(:@bar)
+    end
+
+    it "returns false if instance variable is not set" do
+      refute @toy_object.toy_instance_variable_defined?(:@bar)
+    end
   end
 
-  it "can set an instance variable with symbol and get with string" do
-    @toy_object.toy_instance_variable_set(:@foo, :bar)
-    assert_equal :bar, @toy_object.toy_instance_variable_get("@foo")
-  end
-
-  it "get returns nil if an instance variable has not yet been set" do
-    assert_nil @toy_object.toy_instance_variable_get(:@foo)
-  end
-
-  it "#toy_instance_variables returns the names of set instance variables" do
-    @toy_object.toy_instance_variable_set(:@bar, :foo)
-    @toy_object.toy_instance_variable_set(:@baz, :foo)
-
-    assert_equal [:@bar, :@baz], @toy_object.toy_instance_variables
-  end
-
-  it "#toy_instance_variable_defined? returns true if instance variable is set" do
-    @toy_object.toy_instance_variable_set(:@bar, :foo)
-    assert @toy_object.toy_instance_variable_defined?(:@bar)
-  end
-
-  it "#toy_instance_variable_defined? returns false if instance variable is not set" do
-    refute @toy_object.toy_instance_variable_defined?(:@bar)
-  end
-
-  it "#toy_remove_instance_variable returns value and unsets instance variable" do
-    @toy_object.toy_instance_variable_set(:@bar, :foo)
-    assert @toy_object.toy_instance_variable_defined?(:@bar)
-
-    assert_equal :foo, @toy_object.toy_remove_instance_variable(:@bar)
-    assert_nil @toy_object.toy_instance_variable_get(:@foo)
-    refute @toy_object.toy_instance_variable_defined?(:@foo)
+  describe "#toy_remove_instance_variable" do
+    it "returns value of instance variable and unsets it" do
+      @toy_object.toy_instance_variable_set(:@bar, :foo)
+      assert @toy_object.toy_instance_variable_defined?(:@bar)
+  
+      assert_equal :foo, @toy_object.toy_remove_instance_variable(:@bar)
+      assert_nil @toy_object.toy_instance_variable_get(:@foo)
+      refute @toy_object.toy_instance_variable_defined?(:@foo)
+    end
   end
 end
