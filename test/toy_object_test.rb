@@ -5,7 +5,7 @@ require "toy_object"
 # toy methods to Object's native implementation
 # class FakeToyObject
 #   def method_missing(selector, *args)
-#     selector = selector.to_s.sub(/^/, '')
+#     selector = selector.to_s.delete_prefix("toy_")
 #     send selector, *args
 #   end
 # end
