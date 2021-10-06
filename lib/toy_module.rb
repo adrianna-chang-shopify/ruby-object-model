@@ -1,6 +1,7 @@
 class ToyModule
   def initialize
     @constant_map = {}
+    @method_map = {}
   end
 
   def toy_const_get(name)
@@ -23,7 +24,16 @@ class ToyModule
     constant_map.keys.map(&:to_sym)
   end
 
+  def toy_define_method(name, method)
+    name = name.to_sym
+    method_map[name] = method
+  end
+
+  def toy_instance_methods
+    method_map.keys.map(&:to_sym)
+  end
+
   private
 
-  attr_accessor :constant_map
+  attr_accessor :constant_map, :method_map
 end
