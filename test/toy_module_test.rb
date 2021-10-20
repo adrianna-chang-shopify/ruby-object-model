@@ -67,6 +67,19 @@ require 'toy_module'
       end
     end
 
+    describe '#define_method when passed a proc' do
+      it 'defines instance method on receiver with proc as body' do
+        body = proc { puts 'Hello World!' }
+        call_method(:define_method, :my_method, body)
+
+        assert_equal [:my_method], call_method(:instance_methods)
+      end
+
+      it 'defines instance method with parameters' do
+        skip
+      end
+    end
+
     private
 
     def call_method(name, *args)
