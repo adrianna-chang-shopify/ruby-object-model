@@ -1,4 +1,6 @@
-class ToyModule
+require "toy_object"
+
+class ToyModule < ToyObject
   def initialize
     @constant_map = {}
     @method_map = {}

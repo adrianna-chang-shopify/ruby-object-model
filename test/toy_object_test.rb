@@ -10,7 +10,7 @@ require "toy_object"
 #   end
 # end
 
-[Object, ToyObject].each do |klass|
+[Object, ToyObject, Module, ToyModule, Class, ToyClass].each do |klass|
 
   describe klass do
     before do
@@ -80,7 +80,7 @@ require "toy_object"
     private
 
     def call_method(name, *args)
-      name = @object.is_a?(ToyObject) ? "toy_#{name}" : name
+      name = @object.class.name.start_with?("Toy") ? "toy_#{name}" : name
       @object.public_send(name, *args)
     end
   end

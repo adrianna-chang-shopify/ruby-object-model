@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'toy_module'
 
-[Module, ToyModule].each do |klass|
+[Module, ToyModule, Class, ToyClass].each do |klass|
   describe klass do
     before do
       @module = klass.new
@@ -72,7 +72,7 @@ require 'toy_module'
         body = proc { puts 'Hello World!' }
         call_method(:define_method, :my_method, body)
 
-        assert_equal [:my_method], call_method(:instance_methods)
+        assert_includes call_method(:instance_methods), :my_method
       end
 
       it 'defines instance method with parameters' do
@@ -83,7 +83,7 @@ require 'toy_module'
     private
 
     def call_method(name, *args)
-      name = @module.is_a?(ToyModule) ? "toy_#{name}" : name
+      name = @module.class.name.start_with?("Toy") ? "toy_#{name}" : name
       @module.public_send(name, *args)
     end
   end
