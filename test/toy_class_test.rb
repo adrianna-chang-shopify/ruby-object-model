@@ -14,6 +14,19 @@ require 'toy_object'
       end
     end
 
+    describe "getting a class's superclass" do
+      specify 'returns the superclass' do
+        class_a = klass.new
+        @class = klass.new(class_a)
+
+        assert_equal class_a, call_method(:superclass)
+      end
+
+      specify 'uses the correct default superclass' do
+        assert_equal object_klass, call_method(:superclass)
+      end
+    end
+
     def call_method(name, *args)
       name = @class.is_a?(ToyClass) ? "toy_#{name}" : name
       @class.public_send(name, *args)
