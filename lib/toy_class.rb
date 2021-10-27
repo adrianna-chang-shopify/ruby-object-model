@@ -8,7 +8,7 @@ class ToyClass < ToyModule
   end
 
   def toy_new
-    ToyObject.new
+    ToyObject.new(self)
   end
 
   def toy_superclass

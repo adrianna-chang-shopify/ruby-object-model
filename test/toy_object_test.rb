@@ -1,4 +1,5 @@
 require "test_helper"
+require "toy_class"
 require "toy_object"
 
 # Alternative: we could have created a new class, and delegated the missing
@@ -10,8 +11,11 @@ require "toy_object"
 #   end
 # end
 
-[Object, ToyObject, Module, ToyModule, Class, ToyClass].each do |klass|
-
+[ 
+  [Object, Class], [ToyObject, ToyClass],
+  [Module, Class], [ToyModule, ToyClass],
+  [Class, Class], [ToyClass, ToyClass]
+].each do |klass, class_klass|
   describe klass do
     before do
       @object = klass.new
@@ -70,10 +74,21 @@ require "toy_object"
       it "returns value of instance variable and unsets it" do
         call_method(:instance_variable_set, :@bar, :foo)
         assert call_method(:instance_variable_defined?, :@bar)
-    
+
         assert_equal :foo, call_method(:remove_instance_variable, :@bar)
         assert_nil call_method(:instance_variable_get, :@foo)
         refute call_method(:instance_variable_defined?, :@foo)
+      end
+    end
+
+    describe "getting an instance's class" do
+      specify "returns the class" do
+        my_class = class_klass.new
+        name = my_class.is_a?(ToyClass) ? "toy_new" : "new"
+        my_object = my_class.public_send(name)
+
+        name = my_object.is_a?(ToyObject) ? "toy_class" : "class"
+        assert_equal my_class, my_object.public_send(name)
       end
     end
 
