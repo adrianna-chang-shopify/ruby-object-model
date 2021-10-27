@@ -8,6 +8,7 @@ class ToyModule < ToyObject
   def initialize
     @constant_map = {}
     @method_map = {}
+    super(self.class)
   end
 
   def toy_const_get(name)

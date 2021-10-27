@@ -18,7 +18,7 @@ require "toy_object"
 ].each do |klass, class_klass|
   describe klass do
     before do
-      @new_method = klass == ToyObject ? "toy_new" : "new"
+      @new_method = klass <= ToyObject ? "toy_new" : "new"
       @object = klass.public_send(@new_method)
     end
 

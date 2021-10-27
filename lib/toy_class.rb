@@ -8,7 +8,7 @@ class ToyClass < ToyModule
 
   def initialize(toy_superclass)
     @toy_superclass = toy_superclass
-    super
+    super()
   end
 
   def toy_new
