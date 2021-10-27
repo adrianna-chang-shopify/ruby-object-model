@@ -1,5 +1,9 @@
 class ToyObject
-  def initialize(toy_class = nil)
+  def self.toy_new
+    new(self)
+  end
+
+  def initialize(toy_class)
     @toy_class = toy_class
   end
 

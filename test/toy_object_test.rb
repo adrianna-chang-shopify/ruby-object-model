@@ -18,7 +18,8 @@ require "toy_object"
 ].each do |klass, class_klass|
   describe klass do
     before do
-      @object = klass.new
+      @new_method = klass == ToyObject ? "toy_new" : "new"
+      @object = klass.public_send(@new_method)
     end
 
     describe "accessing instance variables" do
@@ -83,12 +84,16 @@ require "toy_object"
 
     describe "getting an instance's class" do
       specify "returns the class" do
-        my_class = class_klass.new
+        my_class = class_klass.public_send(@new_method)
         name = my_class.is_a?(ToyClass) ? "toy_new" : "new"
         my_object = my_class.public_send(name)
 
         name = my_object.is_a?(ToyObject) ? "toy_class" : "class"
         assert_equal my_class, my_object.public_send(name)
+      end
+
+      specify 'uses the correct default class' do
+        assert_equal klass, call_method(:class)
       end
     end
 

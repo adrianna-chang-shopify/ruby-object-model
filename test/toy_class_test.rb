@@ -5,7 +5,8 @@ require 'toy_object'
 [[Class, Object], [ToyClass, ToyObject]].each do |klass, object_klass|
   describe klass do
     before do
-      @class = klass.new
+      @new_method = klass == ToyClass ? "toy_new" : "new"
+      @class = klass.public_send(@new_method)
     end
 
     describe 'initializing an object' do
@@ -16,8 +17,8 @@ require 'toy_object'
 
     describe "getting a class's superclass" do
       specify 'returns the superclass' do
-        class_a = klass.new
-        @class = klass.new(class_a)
+        class_a = klass.public_send(@new_method)
+        @class = klass.public_send(@new_method, class_a)
 
         assert_equal class_a, call_method(:superclass)
       end

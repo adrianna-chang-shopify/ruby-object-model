@@ -4,7 +4,8 @@ require 'toy_module'
 [Module, ToyModule, Class, ToyClass].each do |klass|
   describe klass do
     before do
-      @module = klass.new
+      @new_method = klass == ToyModule ? "toy_new" : "new"
+      @module = klass.public_send(@new_method)
     end
 
     describe 'accessing constants' do
