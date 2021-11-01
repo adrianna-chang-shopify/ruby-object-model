@@ -2,13 +2,13 @@ require "toy_object"
 
 class ToyModule < ToyObject
   def self.toy_new
-    new
+    new(self)
   end
 
-  def initialize
+  def initialize(toy_class)
     @constant_map = {}
     @method_map = {}
-    super(self.class)
+    super
   end
 
   def toy_const_get(name)

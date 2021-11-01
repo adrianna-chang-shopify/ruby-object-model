@@ -3,12 +3,12 @@ require "toy_object"
 
 class ToyClass < ToyModule
   def self.toy_new(toy_superclass = ToyObject)
-    new(toy_superclass)
+    new(self, toy_superclass)
   end
 
-  def initialize(toy_superclass)
+  def initialize(toy_class, toy_superclass)
     @toy_superclass = toy_superclass
-    super()
+    super(toy_class)
   end
 
   def toy_new
