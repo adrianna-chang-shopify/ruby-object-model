@@ -1,10 +1,6 @@
 require "toy_object"
 
 class ToyModule < ToyObject
-  def self.toy_new
-    new(self)
-  end
-
   def initialize(toy_class)
     @constant_map = {}
     @method_map = {}
