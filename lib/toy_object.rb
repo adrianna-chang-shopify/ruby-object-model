@@ -1,4 +1,12 @@
 class ToyObject
+  def self.toy_new
+    new(self)
+  end
+
+  def initialize(toy_class)
+    @toy_class = toy_class
+  end
+
   def toy_instance_variable_get(name)
     ivar_map[name.to_sym]
   end
@@ -17,6 +25,10 @@ class ToyObject
 
   def toy_remove_instance_variable(name)
     ivar_map.delete(name.to_sym)
+  end
+
+  def toy_class
+    @toy_class
   end
 
   private
