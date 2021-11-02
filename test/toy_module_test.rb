@@ -7,8 +7,7 @@ require 'toy_module'
     include TestHelpers
 
     before do
-      @new_method = klass <= ToyModule ? "toy_new" : "new"
-      @module = klass.public_send(@new_method)
+      @module = call_method(klass, meth_prefix, :new)
     end
 
     describe 'accessing constants' do

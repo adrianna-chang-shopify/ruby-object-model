@@ -7,8 +7,7 @@ require 'toy_object'
     include TestHelpers
 
     before do
-      @new_method = klass == ToyClass ? "toy_new" : "new"
-      @class = klass.public_send(@new_method)
+      @class = call_method(klass, meth_prefix, :new)
     end
 
     describe 'initializing an object' do
@@ -19,7 +18,7 @@ require 'toy_object'
 
     describe "getting a class's superclass" do
       specify 'returns the superclass' do
-        subclass = klass.public_send(@new_method, @class)
+        subclass = call_method(klass, meth_prefix, :new, @class)
         assert_equal @class, call_method(subclass, meth_prefix, :superclass)
       end
 

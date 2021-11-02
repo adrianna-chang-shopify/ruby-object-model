@@ -20,8 +20,7 @@ require "toy_object"
     include TestHelpers
 
     before do
-      @new_method = klass <= ToyObject ? "toy_new" : "new"
-      @object = klass.public_send(@new_method)
+      @object = call_method(klass, meth_prefix, :new)
     end
 
     describe "accessing instance variables" do
