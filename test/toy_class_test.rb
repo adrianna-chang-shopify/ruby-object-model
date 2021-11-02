@@ -11,7 +11,7 @@ require 'toy_object'
 
     describe 'initializing an object' do
       specify 'creates a ToyObject instance' do
-        assert_kind_of object_klass, call_method(:new)
+        assert_kind_of object_klass, call_method(@class, :new)
       end
     end
 
@@ -20,17 +20,17 @@ require 'toy_object'
         class_a = klass.public_send(@new_method)
         @class = klass.public_send(@new_method, class_a)
 
-        assert_equal class_a, call_method(:superclass)
+        assert_equal class_a, call_method(@class, :superclass)
       end
 
       specify 'uses the correct default superclass' do
-        assert_equal object_klass, call_method(:superclass)
+        assert_equal object_klass, call_method(@class, :superclass)
       end
     end
 
-    def call_method(name, *args)
-      name = @class.is_a?(ToyClass) ? "toy_#{name}" : name
-      @class.public_send(name, *args)
+    def call_method(receiver, name, *args)
+      name = receiver.class.name.start_with?("Toy") ? "toy_#{name}" : name
+      receiver.public_send(name, *args)
     end
   end
 end

@@ -24,75 +24,75 @@ require "toy_object"
 
     describe "accessing instance variables" do
       specify "reading and writing with a Symbol name" do
-        call_method(:instance_variable_set, :@foo, :bar)
-        assert_equal :bar, call_method(:instance_variable_get, :@foo)
+        call_method(@object, :instance_variable_set, :@foo, :bar)
+        assert_equal :bar, call_method(@object, :instance_variable_get, :@foo)
 
-        call_method(:instance_variable_set, :@foo, :baz)
-        assert_equal :baz, call_method(:instance_variable_get, :@foo)
+        call_method(@object, :instance_variable_set, :@foo, :baz)
+        assert_equal :baz, call_method(@object, :instance_variable_get, :@foo)
       end
 
       specify "reading and writing with a String name" do
-        call_method(:instance_variable_set, "@foo", :bar)
-        assert_equal :bar, call_method(:instance_variable_get, "@foo")
+        call_method(@object, :instance_variable_set, "@foo", :bar)
+        assert_equal :bar, call_method(@object, :instance_variable_get, "@foo")
       end
 
       specify "reading with a Symbol and writing with a String name" do
-        call_method(:instance_variable_set, "@foo", :bar)
-        assert_equal :bar, call_method(:instance_variable_get, :@foo)
+        call_method(@object, :instance_variable_set, "@foo", :bar)
+        assert_equal :bar, call_method(@object, :instance_variable_get, :@foo)
       end
 
       specify "reading with a String and writing with a Symbol name" do
-        call_method(:instance_variable_set, :@foo, :bar)
-        assert_equal :bar, call_method(:instance_variable_get, "@foo")
+        call_method(@object, :instance_variable_set, :@foo, :bar)
+        assert_equal :bar, call_method(@object, :instance_variable_get, "@foo")
       end
 
       specify "reading an unset instance variable returns nil" do
-        assert_nil call_method(:instance_variable_get, :@foo)
+        assert_nil call_method(@object, :instance_variable_get, :@foo)
       end
     end
 
     describe "#instance_variables" do
       it "returns the names of existing instance variables" do
-        call_method(:instance_variable_set, :@bar, :foo)
-        call_method(:instance_variable_set, :@baz, :foo)
+        call_method(@object, :instance_variable_set, :@bar, :foo)
+        call_method(@object, :instance_variable_set, :@baz, :foo)
 
-        assert_equal [:@bar, :@baz], call_method(:instance_variables)
+        assert_equal [:@bar, :@baz], call_method(@object, :instance_variables)
       end
     end
 
     describe "#instance_variable_defined?" do
       it "returns true if instance variable is set" do
-        call_method(:instance_variable_set, :@bar, :foo)
-        assert call_method(:instance_variable_defined?, :@bar)
+        call_method(@object, :instance_variable_set, :@bar, :foo)
+        assert call_method(@object, :instance_variable_defined?, :@bar)
       end
 
       it "returns false if instance variable is not set" do
-        refute call_method(:instance_variable_defined?, :@bar)
+        refute call_method(@object, :instance_variable_defined?, :@bar)
       end
     end
 
     describe "#remove_instance_variable" do
       it "returns value of instance variable and unsets it" do
-        call_method(:instance_variable_set, :@bar, :foo)
-        assert call_method(:instance_variable_defined?, :@bar)
+        call_method(@object, :instance_variable_set, :@bar, :foo)
+        assert call_method(@object, :instance_variable_defined?, :@bar)
 
-        assert_equal :foo, call_method(:remove_instance_variable, :@bar)
-        assert_nil call_method(:instance_variable_get, :@foo)
-        refute call_method(:instance_variable_defined?, :@foo)
+        assert_equal :foo, call_method(@object, :remove_instance_variable, :@bar)
+        assert_nil call_method(@object, :instance_variable_get, :@foo)
+        refute call_method(@object, :instance_variable_defined?, :@foo)
       end
     end
 
     describe "getting an instance's class" do
       specify "returns the class" do
-        assert_equal klass, call_method(:class)
+        assert_equal klass, call_method(@object, :class)
       end
     end
 
     private
 
-    def call_method(name, *args)
-      name = @object.class.name.start_with?("Toy") ? "toy_#{name}" : name
-      @object.public_send(name, *args)
+    def call_method(receiver, name, *args)
+      name = receiver.class.name.start_with?("Toy") ? "toy_#{name}" : name
+      receiver.public_send(name, *args)
     end
   end
 end
