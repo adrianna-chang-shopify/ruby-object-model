@@ -6,8 +6,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "minitest/autorun"
 
 module TestHelpers
-  def call_method(receiver, name, *args)
-    name = receiver.class.name.start_with?("Toy") ? "toy_#{name}" : name
-    receiver.public_send(name, *args)
+  def call_method(receiver, meth_prefix, name, *args)
+    receiver.public_send("#{meth_prefix}#{name}", *args)
   end
 end
