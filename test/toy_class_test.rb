@@ -17,10 +17,8 @@ require 'toy_object'
 
     describe "getting a class's superclass" do
       specify 'returns the superclass' do
-        class_a = klass.public_send(@new_method)
-        @class = klass.public_send(@new_method, class_a)
-
-        assert_equal class_a, call_method(@class, :superclass)
+        subclass = klass.public_send(@new_method, @class)
+        assert_equal @class, call_method(subclass, :superclass)
       end
 
       specify 'uses the correct default superclass' do
