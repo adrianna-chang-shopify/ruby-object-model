@@ -17,6 +17,8 @@ require "toy_object"
   [Class, Class], [ToyClass, ToyClass]
 ].each do |klass, class_klass|
   describe klass do
+    include TestHelpers
+
     before do
       @new_method = klass <= ToyObject ? "toy_new" : "new"
       @object = klass.public_send(@new_method)
@@ -86,13 +88,6 @@ require "toy_object"
       specify "returns the class" do
         assert_equal klass, call_method(@object, :class)
       end
-    end
-
-    private
-
-    def call_method(receiver, name, *args)
-      name = receiver.class.name.start_with?("Toy") ? "toy_#{name}" : name
-      receiver.public_send(name, *args)
     end
   end
 end

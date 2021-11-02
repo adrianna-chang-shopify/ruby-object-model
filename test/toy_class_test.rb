@@ -4,6 +4,8 @@ require 'toy_object'
 
 [[Class, Object], [ToyClass, ToyObject]].each do |klass, object_klass|
   describe klass do
+    include TestHelpers
+
     before do
       @new_method = klass == ToyClass ? "toy_new" : "new"
       @class = klass.public_send(@new_method)
@@ -24,11 +26,6 @@ require 'toy_object'
       specify 'uses the correct default superclass' do
         assert_equal object_klass, call_method(@class, :superclass)
       end
-    end
-
-    def call_method(receiver, name, *args)
-      name = receiver.class.name.start_with?("Toy") ? "toy_#{name}" : name
-      receiver.public_send(name, *args)
     end
   end
 end

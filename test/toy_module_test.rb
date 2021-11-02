@@ -4,6 +4,8 @@ require 'toy_module'
 
 [Module, ToyModule, Class, ToyClass].each do |klass|
   describe klass do
+    include TestHelpers
+
     before do
       @new_method = klass <= ToyModule ? "toy_new" : "new"
       @module = klass.public_send(@new_method)
@@ -80,13 +82,6 @@ require 'toy_module'
       it 'defines instance method with parameters' do
         skip
       end
-    end
-
-    private
-
-    def call_method(receiver, name, *args)
-      name = receiver.class.name.start_with?("Toy") ? "toy_#{name}" : name
-      receiver.public_send(name, *args)
     end
   end
 end
