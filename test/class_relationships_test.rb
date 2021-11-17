@@ -1,7 +1,5 @@
+require 'class_relationships'
 require 'test_helper'
-require 'toy_class'
-require 'toy_module'
-require 'toy_object'
 
 [
   [Object, Module, Class],
