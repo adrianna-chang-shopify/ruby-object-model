@@ -3,7 +3,7 @@ require 'test_helper'
 
 module NewImpl
   [
-    [Object, Module, Class],
+    [::Object, ::Module, ::Class],
     [ToyObject, ToyModule, ToyClass, 'toy_']
   ].each do |_Object, _Module, _Class, prefix|
     describe 'relationships between Object, Module and Class' do
