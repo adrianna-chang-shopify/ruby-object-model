@@ -24,6 +24,11 @@ module NewImpl
   end
 
   ToyModule = BasicObject.new
+
+  def ToyModule.to_s
+    inspect
+  end
+
   def ToyModule.inspect
     "ToyModule"
   end
@@ -46,6 +51,11 @@ module NewImpl
   end
 
   ToyClass = BasicObject.new
+
+  def ToyClass.to_s
+    inspect
+  end
+
   def ToyClass.inspect
     "ToyClass"
   end
