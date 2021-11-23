@@ -10,6 +10,10 @@ module NewImpl
     "ToyObject"
   end
 
+  def ToyObject.toy_superclass
+    nil
+  end
+
   def ToyObject.toy_class
     ToyClass
   end
