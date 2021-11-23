@@ -18,6 +18,13 @@ module NewImpl
     ToyClass
   end
 
+  # Accomplish the same thing with Enumerator.produce!!
+  # 
+  # def ToyObject.toy_kind_of?(klass)
+  #   e = Enumerator.produce(toy_class) { |klass| klass.toy_superclass or raise StopIteration }
+  #   e.include?(klass)
+  # end
+
   def ToyObject.toy_kind_of?(klass)
     superclass = toy_class
     while superclass
