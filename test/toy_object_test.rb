@@ -3,10 +3,10 @@ require "new_impl/class_relationships"
 
 module NewImpl
   [ 
-    [Object, Class], [ToyObject, ToyClass, "toy_"],
-    # [Module, Class], [ToyModule, ToyClass, "toy_"],
-    # [Class, Class], [ToyClass, ToyClass, "toy_"]
-  ].each do |klass, class_klass, meth_prefix|
+    [Object], [ToyObject, "toy_"],
+    # [Module], [ToyModule, "toy_"],
+    # [Class], [ToyClass, "toy_"]
+  ].each do |klass, meth_prefix|
     describe klass do
       include TestHelpers
 
