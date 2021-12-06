@@ -269,6 +269,10 @@ module NewImpl
         #  TO DO: Make this instance act like a proper ToyObject
         instance
       end
+
+      def toy_superclass
+        ToyObject
+      end
     end
 
     instance

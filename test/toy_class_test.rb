@@ -29,16 +29,17 @@ module NewImpl
         end
       end
 
-      # describe "getting a class's superclass" do
-      #   specify 'returns the superclass' do
-      #     subclass = call_method(klass, meth_prefix, :new, @class)
-      #     assert_equal @class, call_method(subclass, meth_prefix, :superclass)
-      #   end
+      describe "getting a class's superclass" do
+        specify 'returns the superclass' do
+          assert_equal object_klass, call_method(@class, meth_prefix, :superclass)
+        end
 
-      #   specify 'uses the correct default superclass' do
-      #     assert_equal object_klass, call_method(@class, meth_prefix, :superclass)
-      #   end
-      # end
+        specify "works with custom superclass" do
+          skip "TO DO"
+          # previously, we could do ToyClass.toy_new(SomeClass), and SomeClass
+          # would automatically get registered as the superclass
+        end
+      end
     end
   end
 end
