@@ -1,30 +1,44 @@
-require 'test_helper'
-require 'toy_class'
-require 'toy_object'
+require "test_helper"
+require "new_impl/class_relationships"
 
-[[Class, Object], [ToyClass, ToyObject, "toy_"]].each do |klass, object_klass, meth_prefix|
-  describe klass do
-    include TestHelpers
+# require 'toy_class'
+# require 'toy_object'
 
-    before do
-      @class = call_method(klass, meth_prefix, :new)
-    end
+module NewImpl
+  [
+    [Class, Object],
+    [ToyClass, ToyObject, "toy_"]
+  ].each do |klass, object_klass, meth_prefix|
+    describe klass do
+      include TestHelpers
 
-    describe 'initializing an object' do
-      specify 'creates a ToyObject instance' do
-        assert_kind_of object_klass, call_method(@class, meth_prefix, :new)
-      end
-    end
-
-    describe "getting a class's superclass" do
-      specify 'returns the superclass' do
-        subclass = call_method(klass, meth_prefix, :new, @class)
-        assert_equal @class, call_method(subclass, meth_prefix, :superclass)
+      before do
+        @class = call_method(klass, meth_prefix, :new)
       end
 
-      specify 'uses the correct default superclass' do
-        assert_equal object_klass, call_method(@class, meth_prefix, :superclass)
+      describe 'initializing an object' do
+        specify 'creates an instance of the class' do
+          instance = call_method(@class, meth_prefix, :new)
+          # Ask the instance what it's class is; it should be the anonymous
+          # Class stored in @class
+          assert_equal @class, call_method(instance, meth_prefix, :class)
+        end
+
+        specify 'creates an instance that acts like an object' do
+          skip "TO DO"
+        end
       end
+
+      # describe "getting a class's superclass" do
+      #   specify 'returns the superclass' do
+      #     subclass = call_method(klass, meth_prefix, :new, @class)
+      #     assert_equal @class, call_method(subclass, meth_prefix, :superclass)
+      #   end
+
+      #   specify 'uses the correct default superclass' do
+      #     assert_equal object_klass, call_method(@class, meth_prefix, :superclass)
+      #   end
+      # end
     end
   end
 end

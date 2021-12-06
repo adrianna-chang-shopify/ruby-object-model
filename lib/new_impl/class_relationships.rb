@@ -253,6 +253,22 @@ module NewImpl
       def toy_instance_methods
         method_map.keys.map(&:to_sym)
       end
+
+      # Class instance methods
+      def toy_new
+        instance = BasicObject.new
+
+        # self is our anonymous class
+        # In Ruby, this would look like #<Class:0x00007fae319f3bc0>
+        klass = self
+
+        # singleton class is the singleton class of the instance of the anonymous class
+        singleton_class = (class << instance; self; end)
+        singleton_class.define_method(:toy_class) { klass }
+
+        #  TO DO: Make this instance act like a proper ToyObject
+        instance
+      end
     end
 
     instance
