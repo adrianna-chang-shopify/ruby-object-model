@@ -41,14 +41,14 @@ def ToyModule.new
       @constant_map ||= {}
     end
 
-    def toy_const_get(name)
+    def const_get(name)
       name = name.to_sym
       raise NameError, "uninitialized constant #{name} for #{inspect}" unless constant_map.key?(name)
 
       constant_map[name]
     end
 
-    def toy_const_set(name, value)
+    def const_set(name, value)
       name = name.to_sym
       raise NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
 
@@ -57,7 +57,7 @@ def ToyModule.new
       constant_map[name] = value
     end
 
-    def toy_constants
+    def constants
       constant_map.keys.map(&:to_sym)
     end
 
@@ -65,12 +65,12 @@ def ToyModule.new
       @method_map ||= {}
     end
 
-    def toy_define_method(name, method)
+    def define_method(name, method)
       name = name.to_sym
       method_map[name] = method
     end
 
-    def toy_instance_methods
+    def instance_methods
       method_map.keys.map(&:to_sym)
     end
   end
