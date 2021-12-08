@@ -1,5 +1,6 @@
-require "toy_module"
 require "test_helper"
+require "toy_module"
+require "toy_class"
 
 [
   [Module], [ToyModule, "toy_"],

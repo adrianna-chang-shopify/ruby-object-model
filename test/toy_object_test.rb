@@ -1,5 +1,7 @@
 require "test_helper"
 require "toy_object"
+require "toy_module"
+require "toy_class"
 
 [ 
   [Object], [ToyObject, "toy_"],

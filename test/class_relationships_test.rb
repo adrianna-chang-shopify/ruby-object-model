@@ -2,6 +2,7 @@ require "toy_class"
 require "toy_module"
 require "toy_object"
 require "test_helper"
+
 [
   [::Object, ::Module, ::Class],
   [ToyObject, ToyModule, ToyClass]
