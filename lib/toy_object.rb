@@ -19,7 +19,7 @@ end
 # Accomplish the same thing with Enumerator.produce!!
 # 
 # def ToyObject.kind_of?(klass)
-#   e = Enumerator.produce(toy_class) { |klass| klass.toy_superclass or raise StopIteration }
+#   e = Enumerator.produce(self.class) { |klass| klass.superclass or raise StopIteration }
 #   e.include?(klass)
 # end
 

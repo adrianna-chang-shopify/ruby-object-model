@@ -32,7 +32,7 @@ require "toy_class"
 
       specify "works with custom superclass" do
         skip "TO DO"
-        # previously, we could do ToyClass.toy_new(SomeClass), and SomeClass
+        # previously, we could do ToyClass.new(SomeClass), and SomeClass
         # would automatically get registered as the superclass
       end
     end
