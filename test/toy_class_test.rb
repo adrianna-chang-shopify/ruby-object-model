@@ -6,8 +6,6 @@ require "toy_class"
   [ToyClass, ToyObject]
 ].each do |_Class, _Object|
   describe _Class do
-    include TestHelpers
-
     before do
       @class = _Class.new
     end

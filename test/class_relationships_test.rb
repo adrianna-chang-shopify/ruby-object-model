@@ -8,8 +8,6 @@ require "test_helper"
   [ToyObject, ToyModule, ToyClass]
 ].each do |_Object, _Module, _Class|
   describe "relationships between Object, Module and Class" do
-    include TestHelpers
-
     describe "#class" do
       specify "Object’s class is Class" do
         assert_equal _Class, _Object.class

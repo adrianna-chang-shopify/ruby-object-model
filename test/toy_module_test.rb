@@ -4,8 +4,6 @@ require "toy_class"
 
 [Module, ToyModule, Class, ToyClass].each do |_Module|
   describe _Module do
-    include TestHelpers
-
     before do
       @module = _Module.new
     end

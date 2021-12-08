@@ -5,8 +5,6 @@ require "toy_class"
 
 [Object, ToyObject, Module, ToyModule, Class, ToyClass].each do |_Object|
   describe _Object do
-    include TestHelpers
-
     before do
       @object = _Object.new
     end
