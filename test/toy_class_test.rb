@@ -4,12 +4,12 @@ require "toy_class"
 [
   [Class, Object],
   [ToyClass, ToyObject, "toy_"]
-].each do |klass, object_klass, meth_prefix|
-  describe klass do
+].each do |_Class, _Object, meth_prefix|
+  describe _Class do
     include TestHelpers
 
     before do
-      @class = call_method(klass, meth_prefix, :new)
+      @class = _Class.new
     end
 
     describe "initializing an object" do
@@ -27,7 +27,7 @@ require "toy_class"
 
     describe "getting a class's superclass" do
       specify "returns the superclass" do
-        assert_equal object_klass, call_method(@class, meth_prefix, :superclass)
+        assert_equal _Object, call_method(@class, meth_prefix, :superclass)
       end
 
       specify "works with custom superclass" do

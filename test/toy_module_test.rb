@@ -5,12 +5,12 @@ require "toy_class"
 [
   [Module], [ToyModule, "toy_"],
   [Class], [ToyClass, "toy_"]
-].each do |klass, meth_prefix|
-  describe klass do
+].each do |_Module, meth_prefix|
+  describe _Module do
     include TestHelpers
 
     before do
-      @module = call_method(klass, meth_prefix, :new)
+      @module = _Module.new
     end
 
     describe "accessing constants" do
