@@ -8,17 +8,17 @@ def ToyObject.inspect
   "ToyObject"
 end
 
-def ToyObject.toy_superclass
+def ToyObject.superclass
   nil
 end
 
-def ToyObject.toy_class
+def ToyObject.class
   ToyClass
 end
 
 # Accomplish the same thing with Enumerator.produce!!
 # 
-# def ToyObject.toy_kind_of?(klass)
+# def ToyObject.kind_of?(klass)
 #   e = Enumerator.produce(toy_class) { |klass| klass.toy_superclass or raise StopIteration }
 #   e.include?(klass)
 # end
@@ -62,11 +62,11 @@ def ToyObject.toy_new
   instance
 end
 
-def ToyObject.toy_kind_of?(klass)
-  superclass = toy_class
+def ToyObject.kind_of?(klass)
+  superclass = self.class
   while superclass
     return true if klass == superclass
-    superclass = superclass.toy_superclass
+    superclass = superclass.superclass
   end
   false
 end

@@ -108,19 +108,19 @@ def ToyClass.inspect
   "ToyClass"
 end
 
-def ToyClass.toy_class
+def ToyClass.class
   ToyClass
 end
 
-def ToyClass.toy_superclass
+def ToyClass.superclass
   ToyModule
 end
 
-def ToyClass.toy_kind_of?(klass)
-  superclass = toy_class
+def ToyClass.kind_of?(klass)
+  superclass = self.class
   while superclass
     return true if klass == superclass
-    superclass = superclass.toy_superclass
+    superclass = superclass.superclass
   end
   false
 end
