@@ -1,21 +1,11 @@
 require "test_helper"
-require "toy_class"
 require "toy_object"
 
-# Alternative: we could have created a new class, and delegated the missing
-# toy methods to Object's native implementation
-# class FakeToyObject
-#   def method_missing(selector, *args)
-#     selector = selector.to_s.delete_prefix("toy_")
-#     send selector, *args
-#   end
-# end
-
 [ 
-  [Object, Class], [ToyObject, ToyClass, "toy_"],
-  [Module, Class], [ToyModule, ToyClass, "toy_"],
-  [Class, Class], [ToyClass, ToyClass, "toy_"]
-].each do |klass, class_klass, meth_prefix|
+  [Object], [ToyObject, "toy_"],
+  [Module], [ToyModule, "toy_"],
+  [Class], [ToyClass, "toy_"]
+].each do |klass, meth_prefix|
   describe klass do
     include TestHelpers
 
