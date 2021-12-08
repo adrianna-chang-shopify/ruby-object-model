@@ -77,7 +77,7 @@ def ToyClass.new
     end
 
     # Class instance methods
-    def toy_new
+    def new
       instance = BasicObject.new
 
       # self is our anonymous class
@@ -86,13 +86,13 @@ def ToyClass.new
 
       # singleton_class is the singleton class of the instance of the anonymous class
       singleton_class = (class << instance; self; end)
-      singleton_class.define_method(:toy_class) { klass }
+      singleton_class.define_method(:class) { klass }
 
       #  TO DO: Make this instance act like a proper ToyObject
       instance
     end
 
-    def toy_superclass
+    def superclass
       ::ToyObject
     end
   end

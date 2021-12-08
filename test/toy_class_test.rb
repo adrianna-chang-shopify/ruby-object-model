@@ -3,8 +3,8 @@ require "toy_class"
 
 [
   [Class, Object],
-  [ToyClass, ToyObject, "toy_"]
-].each do |_Class, _Object, meth_prefix|
+  [ToyClass, ToyObject]
+].each do |_Class, _Object|
   describe _Class do
     include TestHelpers
 
@@ -14,10 +14,10 @@ require "toy_class"
 
     describe "initializing an object" do
       specify "creates an instance of the class" do
-        instance = call_method(@class, meth_prefix, :new)
+        instance = @class.new
         # Ask the instance what its class is; it should be the anonymous
         # Class stored in @class
-        assert_equal @class, call_method(instance, meth_prefix, :class)
+        assert_equal @class, instance.class
       end
 
       specify "creates an instance that acts like an object" do
@@ -27,7 +27,7 @@ require "toy_class"
 
     describe "getting a class's superclass" do
       specify "returns the superclass" do
-        assert_equal _Object, call_method(@class, meth_prefix, :superclass)
+        assert_equal _Object, @class.superclass
       end
 
       specify "works with custom superclass" do
