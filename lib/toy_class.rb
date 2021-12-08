@@ -84,7 +84,7 @@ def ToyClass.toy_new
       # In Ruby, this would look like #<Class:0x00007fae319f3bc0>
       klass = self
 
-      # singleton class is the singleton class of the instance of the anonymous class
+      # singleton_class is the singleton class of the instance of the anonymous class
       singleton_class = (class << instance; self; end)
       singleton_class.define_method(:toy_class) { klass }
 
