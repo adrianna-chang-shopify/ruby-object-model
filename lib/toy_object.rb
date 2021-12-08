@@ -23,13 +23,13 @@ end
 #   e.include?(klass)
 # end
 
-def ToyObject.toy_new
+def ToyObject.new
   instance = BasicObject.new
 
   klass = self
 
   singleton_class = (class << instance; self; end)
-  singleton_class.define_method(:toy_class) { klass }
+  singleton_class.define_method(:class) { klass }
 
   class << instance
     # Object instance methods
@@ -38,23 +38,23 @@ def ToyObject.toy_new
       @ivar_map ||= {}
     end
 
-    def toy_instance_variable_get(name)
+    def instance_variable_get(name)
       ivar_map[name.to_sym]
     end
 
-    def toy_instance_variable_set(name, value)
+    def instance_variable_set(name, value)
       ivar_map[name.to_sym] = value
     end
 
-    def toy_instance_variables
+    def instance_variables
       ivar_map.keys
     end
 
-    def toy_instance_variable_defined?(name)
+    def instance_variable_defined?(name)
       ivar_map.has_key?(name.to_sym)
     end
 
-    def toy_remove_instance_variable(name)
+    def remove_instance_variable(name)
       ivar_map.delete(name.to_sym)
     end
   end
