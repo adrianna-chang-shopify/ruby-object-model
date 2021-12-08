@@ -15,7 +15,7 @@ require "toy_class"
     describe "initializing an object" do
       specify "creates an instance of the class" do
         instance = call_method(@class, meth_prefix, :new)
-        # Ask the instance what it"s class is; it should be the anonymous
+        # Ask the instance what its class is; it should be the anonymous
         # Class stored in @class
         assert_equal @class, call_method(instance, meth_prefix, :class)
       end
