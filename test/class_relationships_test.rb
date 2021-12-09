@@ -1,6 +1,6 @@
-require "toy_class"
-require "toy_module"
-require "toy_object"
+require "toy/class"
+require "toy/module"
+require "toy/object"
 require "test_helper"
 
 [

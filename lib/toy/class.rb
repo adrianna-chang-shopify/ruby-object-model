@@ -1,4 +1,4 @@
-require "toy_object"
+require "toy/object"
 
 ToyClass = BasicObject.new
 

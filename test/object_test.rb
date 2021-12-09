@@ -1,7 +1,7 @@
 require "test_helper"
-require "toy_object"
-require "toy_module"
-require "toy_class"
+require "toy/object"
+require "toy/module"
+require "toy/class"
 
 [Object, ToyObject, Module, ToyModule, Class, ToyClass].each do |_Object|
   describe _Object do

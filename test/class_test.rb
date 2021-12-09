@@ -1,5 +1,5 @@
 require "test_helper"
-require "toy_class"
+require "toy/class"
 
 [
   [Class, Object],
