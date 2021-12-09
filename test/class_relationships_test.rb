@@ -35,7 +35,6 @@ require "test_helper"
     describe "#kind_of?" do
       describe "Object" do
         specify "Object is a kind of Object" do
-          # assert _Object.kind_of?(_Object)
           assert_kind_of _Object, _Object
         end
 
