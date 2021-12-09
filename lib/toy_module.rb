@@ -1,12 +1,12 @@
 ToyModule = BasicObject.new
 
-def ToyModule.toy_new
+def ToyModule.new
   instance = BasicObject.new
 
   klass = self
 
   singleton_class = (class << instance; self; end)
-  singleton_class.define_method(:toy_class) { klass }
+  singleton_class.define_method(:class) { klass }
 
   class << instance
     # Object instance methods
@@ -15,23 +15,23 @@ def ToyModule.toy_new
       @ivar_map ||= {}
     end
 
-    def toy_instance_variable_get(name)
+    def instance_variable_get(name)
       ivar_map[name.to_sym]
     end
 
-    def toy_instance_variable_set(name, value)
+    def instance_variable_set(name, value)
       ivar_map[name.to_sym] = value
     end
 
-    def toy_instance_variables
+    def instance_variables
       ivar_map.keys
     end
 
-    def toy_instance_variable_defined?(name)
+    def instance_variable_defined?(name)
       ivar_map.has_key?(name.to_sym)
     end
 
-    def toy_remove_instance_variable(name)
+    def remove_instance_variable(name)
       ivar_map.delete(name.to_sym)
     end
 
@@ -41,14 +41,14 @@ def ToyModule.toy_new
       @constant_map ||= {}
     end
 
-    def toy_const_get(name)
+    def const_get(name)
       name = name.to_sym
       raise NameError, "uninitialized constant #{name} for #{inspect}" unless constant_map.key?(name)
 
       constant_map[name]
     end
 
-    def toy_const_set(name, value)
+    def const_set(name, value)
       name = name.to_sym
       raise NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
 
@@ -57,7 +57,7 @@ def ToyModule.toy_new
       constant_map[name] = value
     end
 
-    def toy_constants
+    def constants
       constant_map.keys.map(&:to_sym)
     end
 
@@ -65,12 +65,12 @@ def ToyModule.toy_new
       @method_map ||= {}
     end
 
-    def toy_define_method(name, method)
+    def define_method(name, method)
       name = name.to_sym
       method_map[name] = method
     end
 
-    def toy_instance_methods
+    def instance_methods
       method_map.keys.map(&:to_sym)
     end
   end
@@ -86,19 +86,19 @@ def ToyModule.inspect
   "ToyModule"
 end
 
-def ToyModule.toy_class
+def ToyModule.class
   ToyClass
 end
 
-def ToyModule.toy_superclass
+def ToyModule.superclass
   ToyObject
 end
 
-def ToyModule.toy_kind_of?(klass)
-  superclass = toy_class
+def ToyModule.kind_of?(klass)
+  superclass = self.class
   while superclass
     return true if klass == superclass
-    superclass = superclass.toy_superclass
+    superclass = superclass.superclass
   end
   false
 end

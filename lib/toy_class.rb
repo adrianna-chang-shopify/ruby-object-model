@@ -2,13 +2,13 @@ require "toy_object"
 
 ToyClass = BasicObject.new
 
-def ToyClass.toy_new
+def ToyClass.new
   instance = BasicObject.new
 
   klass = self
 
   singleton_class = (class << instance; self; end)
-  singleton_class.define_method(:toy_class) { klass }
+  singleton_class.define_method(:class) { klass }
 
   class << instance
     # Object instance methods
@@ -17,23 +17,23 @@ def ToyClass.toy_new
       @ivar_map ||= {}
     end
 
-    def toy_instance_variable_get(name)
+    def instance_variable_get(name)
       ivar_map[name.to_sym]
     end
 
-    def toy_instance_variable_set(name, value)
+    def instance_variable_set(name, value)
       ivar_map[name.to_sym] = value
     end
 
-    def toy_instance_variables
+    def instance_variables
       ivar_map.keys
     end
 
-    def toy_instance_variable_defined?(name)
+    def instance_variable_defined?(name)
       ivar_map.has_key?(name.to_sym)
     end
 
-    def toy_remove_instance_variable(name)
+    def remove_instance_variable(name)
       ivar_map.delete(name.to_sym)
     end
 
@@ -43,14 +43,14 @@ def ToyClass.toy_new
       @constant_map ||= {}
     end
 
-    def toy_const_get(name)
+    def const_get(name)
       name = name.to_sym
       raise NameError, "uninitialized constant #{name} for #{inspect}" unless constant_map.key?(name)
 
       constant_map[name]
     end
 
-    def toy_const_set(name, value)
+    def const_set(name, value)
       name = name.to_sym
       raise NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
 
@@ -59,7 +59,7 @@ def ToyClass.toy_new
       constant_map[name] = value
     end
 
-    def toy_constants
+    def constants
       constant_map.keys.map(&:to_sym)
     end
 
@@ -67,32 +67,32 @@ def ToyClass.toy_new
       @method_map ||= {}
     end
 
-    def toy_define_method(name, method)
+    def define_method(name, method)
       name = name.to_sym
       method_map[name] = method
     end
 
-    def toy_instance_methods
+    def instance_methods
       method_map.keys.map(&:to_sym)
     end
 
     # Class instance methods
-    def toy_new
+    def new
       instance = BasicObject.new
 
       # self is our anonymous class
       # In Ruby, this would look like #<Class:0x00007fae319f3bc0>
       klass = self
 
-      # singleton class is the singleton class of the instance of the anonymous class
+      # singleton_class is the singleton class of the instance of the anonymous class
       singleton_class = (class << instance; self; end)
-      singleton_class.define_method(:toy_class) { klass }
+      singleton_class.define_method(:class) { klass }
 
       #  TO DO: Make this instance act like a proper ToyObject
       instance
     end
 
-    def toy_superclass
+    def superclass
       ::ToyObject
     end
   end
@@ -108,19 +108,19 @@ def ToyClass.inspect
   "ToyClass"
 end
 
-def ToyClass.toy_class
+def ToyClass.class
   ToyClass
 end
 
-def ToyClass.toy_superclass
+def ToyClass.superclass
   ToyModule
 end
 
-def ToyClass.toy_kind_of?(klass)
-  superclass = toy_class
+def ToyClass.kind_of?(klass)
+  superclass = self.class
   while superclass
     return true if klass == superclass
-    superclass = superclass.toy_superclass
+    superclass = superclass.superclass
   end
   false
 end
