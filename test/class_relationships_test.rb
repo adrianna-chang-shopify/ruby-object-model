@@ -35,43 +35,44 @@ require "test_helper"
     describe "#kind_of?" do
       describe "Object" do
         specify "Object is a kind of Object" do
-          assert _Object.kind_of?(_Object)
+          # assert _Object.kind_of?(_Object)
+          assert_kind_of _Object, _Object
         end
 
         specify "Object is a kind of Module" do
-          assert _Object.kind_of?(_Module)
+          assert_kind_of _Module, _Object
         end
 
         specify "Object is a kind of Class" do
-          assert _Object.kind_of?(_Class)
+          assert_kind_of _Class, _Object
         end
       end
 
       describe "Module" do
         specify "Module is a kind of Object" do
-          assert _Module.kind_of?(_Object)
+          assert_kind_of _Object, _Module
         end
 
         specify "Module is a kind of Module" do
-          assert _Module.kind_of?(_Module)
+          assert_kind_of _Module, _Module
         end
 
         specify "Module is a kind of Class" do
-          assert _Module.kind_of?(_Class)
+          assert_kind_of _Class, _Module
         end
       end
 
       describe "Class" do
         specify "Class is a kind of Object" do
-          assert _Class.kind_of?(_Object)
+          assert_kind_of _Object, _Class
         end
 
         specify "Class is a kind of Module" do
-          assert _Class.kind_of?(_Module)
+          assert_kind_of _Module, _Class
         end
 
         specify "Class is a kind of Class" do
-          assert _Class.kind_of?(_Class)
+          assert_kind_of _Class, _Class
         end
       end
     end
