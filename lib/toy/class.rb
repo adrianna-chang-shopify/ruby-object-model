@@ -3,13 +3,14 @@ require "toy/object"
 module Toy
   Class = BasicObject.new
 
-  def Class.new
+  def Class.new(superclass = Object)
     instance = BasicObject.new
 
     klass = self
 
     singleton_class = (class << instance; self; end)
     singleton_class.define_method(:class) { klass }
+    singleton_class.define_method(:superclass) { superclass }
 
     class << instance
       # Object instance methods
@@ -89,12 +90,34 @@ module Toy
         singleton_class = (class << instance; self; end)
         singleton_class.define_method(:class) { klass }
 
-        #  TO DO: Make this instance act like a proper Object
-        instance
-      end
+        class << instance
+          # Object instance methods
+          def ivar_map
+            @ivar_map ||= {}
+          end
 
-      def superclass
-        Object
+          def instance_variable_get(name)
+            ivar_map[name.to_sym]
+          end
+
+          def instance_variable_set(name, value)
+            ivar_map[name.to_sym] = value
+          end
+
+          def instance_variables
+            ivar_map.keys
+          end
+
+          def instance_variable_defined?(name)
+            ivar_map.has_key?(name.to_sym)
+          end
+
+          def remove_instance_variable(name)
+            ivar_map.delete(name.to_sym)
+          end
+        end      
+
+        instance
       end
     end
 
