@@ -3,7 +3,7 @@ require "toy/class"
 
 [
   [Class, Object],
-  [ToyClass, ToyObject]
+  [Toy::Class, Toy::Object]
 ].each do |_Class, _Object|
   describe _Class do
     before do

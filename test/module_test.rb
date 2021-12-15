@@ -2,7 +2,7 @@ require "test_helper"
 require "toy/module"
 require "toy/class"
 
-[Module, ToyModule, Class, ToyClass].each do |_Module|
+[Module, Toy::Module, Class, Toy::Class].each do |_Module|
   describe _Module do
     before do
       @module = _Module.new

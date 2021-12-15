@@ -5,7 +5,7 @@ require "test_helper"
 
 [
   [::Object, ::Module, ::Class],
-  [ToyObject, ToyModule, ToyClass]
+  [Toy::Object, Toy::Module, Toy::Class]
 ].each do |_Object, _Module, _Class|
   describe "relationships between Object, Module and Class" do
     describe "#class" do

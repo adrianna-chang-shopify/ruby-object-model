@@ -3,7 +3,7 @@ require "toy/object"
 require "toy/module"
 require "toy/class"
 
-[Object, ToyObject, Module, ToyModule, Class, ToyClass].each do |_Object|
+[Object, Toy::Object, Module, Toy::Module, Class, Toy::Class].each do |_Object|
   describe _Object do
     before do
       @object = _Object.new
