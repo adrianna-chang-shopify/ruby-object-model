@@ -47,7 +47,7 @@ require "toy/class"
             error = assert_raises NameError do
               @module.const_get("FOO")
             end
-            assert_match(/uninitialized constant/, error.message)
+            assert_match(/uninitialized constant #<#{_Module}(:.*)?>::FOO/, error.message)
           end
 
           specify "warns when setting a constant that is already set" do
@@ -57,7 +57,7 @@ require "toy/class"
               @module.const_set("FOO", 42)
             end
 
-            assert_match(/already initialized constant/, err)
+            assert_match(/already initialized constant #<#{_Module}(:.*)?>::FOO/, err)
           end
         end
 
