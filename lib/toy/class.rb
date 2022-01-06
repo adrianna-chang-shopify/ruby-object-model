@@ -39,6 +39,10 @@ module Toy
         ivar_map.delete(name.to_sym)
       end
 
+      def inspect
+        "#<#{self.class}>"
+      end
+
       # Module instance methods
 
       def constant_map
@@ -47,16 +51,16 @@ module Toy
 
       def const_get(name)
         name = name.to_sym
-        raise NameError, "uninitialized constant #{name} for #{inspect}" unless constant_map.key?(name)
+        ::Kernel.raise ::NameError, "uninitialized constant #{inspect}::#{name}" unless constant_map.key?(name)
 
         constant_map[name]
       end
 
       def const_set(name, value)
         name = name.to_sym
-        raise NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
+        ::Kernel.raise ::NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
 
-        ::Kernel.warn "already initialized constant #{name}" if constant_map.key?(name)
+        ::Kernel.warn "already initialized constant #{inspect}::#{name}" if constant_map.key?(name)
 
         constant_map[name] = value
       end
