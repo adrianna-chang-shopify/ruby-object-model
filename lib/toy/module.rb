@@ -17,19 +17,7 @@ module Toy
 
       # Module instance methods
       include Behaviours::Constants
-
-      def method_map
-        @method_map ||= {}
-      end
-
-      def define_method(name, method)
-        name = name.to_sym
-        method_map[name] = method
-      end
-
-      def instance_methods
-        method_map.keys.map(&:to_sym)
-      end
+      include Behaviours::Methods
     end
 
     instance
