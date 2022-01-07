@@ -17,35 +17,8 @@ module Toy
       # Object instance methods
       include Behaviours::InstanceVariables
 
-      def inspect
-        "#<#{self.class}>"
-      end
-
       # Module instance methods
-
-      def constant_map
-        @constant_map ||= {}
-      end
-
-      def const_get(name)
-        name = name.to_sym
-        ::Kernel.raise ::NameError, "uninitialized constant #{inspect}::#{name}" unless constant_map.key?(name)
-
-        constant_map[name]
-      end
-
-      def const_set(name, value)
-        name = name.to_sym
-        ::Kernel.raise ::NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
-
-        ::Kernel.warn "already initialized constant #{inspect}::#{name}" if constant_map.key?(name)
-
-        constant_map[name] = value
-      end
-
-      def constants
-        constant_map.keys.map(&:to_sym)
-      end
+      include Behaviours::Constants
 
       def method_map
         @method_map ||= {}
