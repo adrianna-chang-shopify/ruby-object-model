@@ -1,3 +1,4 @@
+require "toy/behaviours"
 require "toy/object"
 
 module Toy
@@ -14,72 +15,14 @@ module Toy
 
     class << instance
       # Object instance methods
+      include Behaviours::InstanceVariables
 
-      def ivar_map
-        @ivar_map ||= {}
-      end
-
-      def instance_variable_get(name)
-        ivar_map[name.to_sym]
-      end
-
-      def instance_variable_set(name, value)
-        ivar_map[name.to_sym] = value
-      end
-
-      def instance_variables
-        ivar_map.keys
-      end
-
-      def instance_variable_defined?(name)
-        ivar_map.has_key?(name.to_sym)
-      end
-
-      def remove_instance_variable(name)
-        ivar_map.delete(name.to_sym)
-      end
+      # Module instance methods
+      include Behaviours::Constants
+      include Behaviours::Methods
 
       def inspect
         "#<#{self.class}>"
-      end
-
-      # Module instance methods
-
-      def constant_map
-        @constant_map ||= {}
-      end
-
-      def const_get(name)
-        name = name.to_sym
-        ::Kernel.raise ::NameError, "uninitialized constant #{inspect}::#{name}" unless constant_map.key?(name)
-
-        constant_map[name]
-      end
-
-      def const_set(name, value)
-        name = name.to_sym
-        ::Kernel.raise ::NameError unless name.match?(/^[A-Z][a-zA-Z_]*$/)
-
-        ::Kernel.warn "already initialized constant #{inspect}::#{name}" if constant_map.key?(name)
-
-        constant_map[name] = value
-      end
-
-      def constants
-        constant_map.keys.map(&:to_sym)
-      end
-
-      def method_map
-        @method_map ||= {}
-      end
-
-      def define_method(name, method)
-        name = name.to_sym
-        method_map[name] = method
-      end
-
-      def instance_methods
-        method_map.keys.map(&:to_sym)
       end
 
       # Class instance methods
@@ -96,29 +39,7 @@ module Toy
 
         class << instance
           # Object instance methods
-          def ivar_map
-            @ivar_map ||= {}
-          end
-
-          def instance_variable_get(name)
-            ivar_map[name.to_sym]
-          end
-
-          def instance_variable_set(name, value)
-            ivar_map[name.to_sym] = value
-          end
-
-          def instance_variables
-            ivar_map.keys
-          end
-
-          def instance_variable_defined?(name)
-            ivar_map.has_key?(name.to_sym)
-          end
-
-          def remove_instance_variable(name)
-            ivar_map.delete(name.to_sym)
-          end
+          include Behaviours::InstanceVariables
         end      
 
         instance
