@@ -37,6 +37,10 @@ module Toy
     class << instance
       # Object instance methods
       include Behaviours::InstanceVariables
+
+      def inspect
+        "#<#{self.class}>"
+      end
     end
 
     instance

@@ -18,6 +18,10 @@ module Toy
       # Module instance methods
       include Behaviours::Constants
       include Behaviours::Methods
+
+      def inspect
+        "#<#{self.class}>"
+      end
     end
 
     instance

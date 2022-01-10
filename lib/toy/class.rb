@@ -21,6 +21,10 @@ module Toy
       include Behaviours::Constants
       include Behaviours::Methods
 
+      def inspect
+        "#<#{self.class}>"
+      end
+
       # Class instance methods
       def new
         instance = BasicObject.new
