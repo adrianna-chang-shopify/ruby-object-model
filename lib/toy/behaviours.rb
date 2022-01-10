@@ -1,10 +1,6 @@
 module Toy
   module Behaviours
     module InstanceVariables
-      def ivar_map
-        @ivar_map ||= {}
-      end
-
       def instance_variable_get(name)
         ivar_map[name.to_sym]
       end
@@ -24,16 +20,17 @@ module Toy
       def remove_instance_variable(name)
         ivar_map.delete(name.to_sym)
       end
+
+      private
+
+      def ivar_map
+        @ivar_map ||= {}
+      end
     end
 
     module Constants
       def inspect
         "#<#{self.class}>"
-      end
-
-      # Module instance methods
-      def constant_map
-        @constant_map ||= {}
       end
 
       def const_get(name)
@@ -55,13 +52,15 @@ module Toy
       def constants
         constant_map.keys.map(&:to_sym)
       end
+
+      private
+
+      def constant_map
+        @constant_map ||= {}
+      end
     end
 
     module Methods
-      def method_map
-        @method_map ||= {}
-      end
-
       def define_method(name, method)
         name = name.to_sym
         method_map[name] = method
@@ -69,6 +68,12 @@ module Toy
 
       def instance_methods
         method_map.keys.map(&:to_sym)
+      end
+
+      private
+
+      def method_map
+        @method_map ||= {}
       end
     end
   end
