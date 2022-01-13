@@ -56,6 +56,15 @@ module Toy
         def inspect
           "#<#{self.class}>"
         end
+
+        def kind_of?(klass)
+          superclass = self.class
+          while superclass
+            return true if klass == superclass
+            superclass = superclass.superclass
+          end
+          false
+        end
       end
   
       instance
