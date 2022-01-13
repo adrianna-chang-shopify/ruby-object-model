@@ -12,75 +12,75 @@ module Toy
     # Module instance methods, because the Class singleton is a module yo!
     include Behaviours::Constants
     include Behaviours::Methods
-  end
-
-  def Class.new(superclass = Object)
-    instance = BasicObject.new
-
-    klass = self
-
-    singleton_class = (class << instance; self; end)
-    singleton_class.define_method(:class) { klass }
-    singleton_class.define_method(:superclass) { superclass }
-
-    class << instance
-      # Object instance methods
-      include Behaviours::InstanceVariables
-
-      # Module instance methods
-      include Behaviours::Constants
-      include Behaviours::Methods
-
-      def inspect
-        "#<#{self.class}>"
+  
+    def to_s
+      inspect
+    end
+  
+    def inspect
+      "Toy::Class"
+    end
+  
+    def class
+      Class
+    end
+  
+    def superclass
+      Module
+    end
+  
+    def kind_of?(klass)
+      superclass = self.class
+      while superclass
+        return true if klass == superclass
+        superclass = superclass.superclass
       end
-
-      # Class instance methods
-      def new
-        instance = BasicObject.new
-
-        # self is our anonymous class
-        # In Ruby, this would look like #<Class:0x00007fae319f3bc0>
-        klass = self
-
-        # singleton_class is the singleton class of the instance of the anonymous class
-        singleton_class = (class << instance; self; end)
-        singleton_class.define_method(:class) { klass }
-
-        class << instance
-          # Object instance methods
-          include Behaviours::InstanceVariables
-        end      
-
-        instance
-      end
+      false
     end
 
-    instance
-  end
-
-  def Class.to_s
-    inspect
-  end
-
-  def Class.inspect
-    "Toy::Class"
-  end
-
-  def Class.class
-    Class
-  end
-
-  def Class.superclass
-    Module
-  end
-
-  def Class.kind_of?(klass)
-    superclass = self.class
-    while superclass
-      return true if klass == superclass
-      superclass = superclass.superclass
+    def new(superclass = Object)
+      instance = BasicObject.new
+  
+      klass = self
+  
+      singleton_class = (class << instance; self; end)
+      singleton_class.define_method(:class) { klass }
+      singleton_class.define_method(:superclass) { superclass }
+  
+      class << instance
+        # Object instance methods
+        include Behaviours::InstanceVariables
+  
+        # Module instance methods
+        include Behaviours::Constants
+        include Behaviours::Methods
+  
+        def inspect
+          "#<#{self.class}>"
+        end
+  
+        # Class instance methods
+        def new
+          instance = BasicObject.new
+  
+          # self is our anonymous class
+          # In Ruby, this would look like #<Class:0x00007fae319f3bc0>
+          klass = self
+  
+          # singleton_class is the singleton class of the instance of the anonymous class
+          singleton_class = (class << instance; self; end)
+          singleton_class.define_method(:class) { klass }
+  
+          class << instance
+            # Object instance methods
+            include Behaviours::InstanceVariables
+          end      
+  
+          instance
+        end
+      end
+  
+      instance
     end
-    false
   end
 end
