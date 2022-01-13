@@ -19,6 +19,16 @@ module Toy
     Class
   end
 
+  # Open up singleton class of Toy::Object
+  class << Object
+    # Object instance methods, because the Object singleton is an object yo!
+    include Behaviours::InstanceVariables
+
+    # Module instance methods, because the Object singleton is a module yo!
+    include Behaviours::Constants
+    include Behaviours::Methods
+  end
+
   # Accomplish the same thing with Enumerator.produce!!
   # 
   # def Object.kind_of?(klass)

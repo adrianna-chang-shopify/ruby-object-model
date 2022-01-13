@@ -3,6 +3,16 @@ require "toy/behaviours"
 module Toy
   Module = BasicObject.new
 
+    # Open up singleton class of Toy::Module
+    class << Module
+      # Object instance methods, because the Module singleton is an object yo!
+      include Behaviours::InstanceVariables
+  
+      # Module instance methods, because the Module singleton is a module yo!
+      include Behaviours::Constants
+      include Behaviours::Methods
+    end
+
   def Module.new
     instance = BasicObject.new
 
