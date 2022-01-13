@@ -12,6 +12,9 @@ module Toy
     include Behaviours::Constants
     include Behaviours::Methods
 
+    # kind_of?
+    include Behaviours::ClassRelationships
+
     def to_s
       inspect
     end
@@ -26,15 +29,6 @@ module Toy
   
     def class
       Class
-    end
-
-    def kind_of?(klass)
-      superclass = self.class
-      while superclass
-        return true if klass == superclass
-        superclass = superclass.superclass
-      end
-      false
     end
 
     def new

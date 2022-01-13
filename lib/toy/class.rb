@@ -12,6 +12,9 @@ module Toy
     # Module instance methods, because the Class singleton is a module yo!
     include Behaviours::Constants
     include Behaviours::Methods
+
+    # kind_of?
+    include Behaviours::ClassRelationships
   
     def to_s
       inspect
@@ -28,15 +31,7 @@ module Toy
     def superclass
       Module
     end
-  
-    def kind_of?(klass)
-      superclass = self.class
-      while superclass
-        return true if klass == superclass
-        superclass = superclass.superclass
-      end
-      false
-    end
+
 
     def new(superclass = Object)
       instance = BasicObject.new
