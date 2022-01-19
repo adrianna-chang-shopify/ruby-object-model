@@ -1,4 +1,5 @@
 require "toy/behaviours"
+require "toy/class_instance"
 require "toy/module"
 require "toy/object"
 
@@ -35,22 +36,6 @@ module Toy
 
     def new(superclass = Object)
       ClassInstance.new(self, superclass)
-    end
-  end
-
-  class ClassInstance < ModuleInstance
-    def initialize(klass, superclass)
-      super(klass)
-      @superclass = superclass
-    end
-
-    def superclass
-      @superclass
-    end
-
-    # Class instance methods
-    def new
-      ObjectInstance.new(self)
     end
   end
 end
