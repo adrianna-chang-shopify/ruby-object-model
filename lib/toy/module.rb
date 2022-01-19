@@ -1,4 +1,5 @@
 require "toy/behaviours"
+require "toy/module_instance"
 require "toy/object"
 
 module Toy
@@ -35,11 +36,5 @@ module Toy
     def new
       ModuleInstance.new(self)
     end
-  end
-
-  class ModuleInstance < ObjectInstance
-    # Module instance methods
-    include Behaviours::Constants
-    include Behaviours::Methods
   end
 end
