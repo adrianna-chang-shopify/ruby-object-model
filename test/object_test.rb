@@ -87,6 +87,18 @@ require "toy/class"
             refute @object.kind_of?(other_class)
           end
         end
+
+        describe "#inspect" do
+          it "inspects the object" do
+            assert_match(/#<#{_Object}(:.*)?>/, @object.inspect)
+          end
+        end
+
+        describe "#to_s" do
+          it "returns Stringified version of the object" do
+            assert_match(/#<#{_Object}(:.*)?>/, @object.to_s)
+          end
+        end
       end
     end
   end
