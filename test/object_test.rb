@@ -76,6 +76,17 @@ require "toy/class"
             assert_equal _Object, @object.class
           end
         end
+
+        describe "#kind_of?" do
+          it "returns true for #{_Object}" do
+            assert @object.kind_of?(_Object)
+          end
+
+          it "returns false for non-#{_Object}" do
+            other_class = ns::Class.new
+            refute @object.kind_of?(other_class)
+          end
+        end
       end
     end
   end
