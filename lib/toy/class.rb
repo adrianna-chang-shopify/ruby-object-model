@@ -15,19 +15,19 @@ module Toy
 
     # kind_of?
     include Behaviours::ClassRelationships
-  
+
     def to_s
       inspect
     end
-  
+
     def inspect
       "Toy::Class"
     end
-  
+
     def class
       Class
     end
-  
+
     def superclass
       Module
     end
@@ -35,21 +35,21 @@ module Toy
 
     def new(superclass = Object)
       instance = BasicObject.new
-  
+
       klass = self
-  
+
       singleton_class = (class << instance; self; end)
       singleton_class.define_method(:class) { klass }
       singleton_class.define_method(:superclass) { superclass }
-  
+
       class << instance
         # Object instance methods
         include Behaviours::InstanceVariables
-  
+
         # Module instance methods
         include Behaviours::Constants
         include Behaviours::Methods
-  
+
         def inspect
           "#<#{self.class}>"
         end
@@ -62,19 +62,19 @@ module Toy
           end
           false
         end
-  
+
         # Class instance methods
         def new
           instance = BasicObject.new
-  
+
           # self is our anonymous class
           # In Ruby, this would look like #<Class:0x00007fae319f3bc0>
           klass = self
-  
+
           # singleton_class is the singleton class of the instance of the anonymous class
           singleton_class = (class << instance; self; end)
           singleton_class.define_method(:class) { klass }
-  
+
           class << instance
             # Object instance methods
             include Behaviours::InstanceVariables
@@ -87,12 +87,12 @@ module Toy
               end
               false
             end
-          end      
-  
+          end
+
           instance
         end
       end
-  
+
       instance
     end
   end

@@ -18,35 +18,35 @@ module Toy
     def to_s
       inspect
     end
-  
+
     def inspect
       "Toy::Module"
     end
-  
+
     def class
       Class
     end
-  
+
     def superclass
       Object
     end
 
     def new
       instance = BasicObject.new
-  
+
       klass = self
-  
+
       singleton_class = (class << instance; self; end)
       singleton_class.define_method(:class) { klass }
-  
+
       class << instance
         # Object instance methods
         include Behaviours::InstanceVariables
-  
+
         # Module instance methods
         include Behaviours::Constants
         include Behaviours::Methods
-  
+
         def inspect
           "#<#{self.class}>"
         end
@@ -60,7 +60,7 @@ module Toy
           false
         end
       end
-  
+
       instance
     end
   end
