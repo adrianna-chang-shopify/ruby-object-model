@@ -32,11 +32,11 @@ module Toy
     end
 
     def new
-      Instance.new(self)
+      ObjectInstance.new(self)
     end
   end
 
-  class Instance < BasicObject
+  class ObjectInstance < BasicObject
     # Object instance methods
     include Behaviours::InstanceVariables
 
