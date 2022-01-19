@@ -3,55 +3,54 @@ require "toy/behaviours"
 module Toy
   Object = BasicObject.new
 
-  def Object.to_s
-    inspect
-  end
+  # Open up singleton class of Toy::Object
+  class << Object
+    # Object instance methods, because the Object singleton is an object yo!
+    include Behaviours::InstanceVariables
 
-  def Object.inspect
-    "Toy::Object"
-  end
+    # Module instance methods, because the Object singleton is a module yo!
+    include Behaviours::Constants
+    include Behaviours::Methods
 
-  def Object.superclass
-    nil
-  end
+    # kind_of?
+    include Behaviours::ClassRelationships
 
-  def Object.class
-    Class
-  end
+    def to_s
+      inspect
+    end
 
-  # Accomplish the same thing with Enumerator.produce!!
-  # 
-  # def Object.kind_of?(klass)
-  #   e = Enumerator.produce(self.class) { |klass| klass.superclass or raise StopIteration }
-  #   e.include?(klass)
-  # end
+    def inspect
+      "Toy::Object"
+    end
 
-  def Object.new
-    instance = BasicObject.new
+    def superclass
+      nil
+    end
 
-    klass = self
+    def class
+      Class
+    end
 
-    singleton_class = (class << instance; self; end)
-    singleton_class.define_method(:class) { klass }
+    def new
+      instance = BasicObject.new
 
-    class << instance
-      # Object instance methods
-      include Behaviours::InstanceVariables
+      klass = self
 
-      def inspect
-        "#<#{self.class}>"
+      singleton_class = (class << instance; self; end)
+      singleton_class.define_method(:class) { klass }
+
+      class << instance
+        # Object instance methods
+        include Behaviours::InstanceVariables
+
+        # kind_of?
+        include Behaviours::ClassRelationships
+
+        # to_s and #inspect
+        include Behaviours::Inspection
       end
-    end
 
-    instance
-  end
-
-  def Object.kind_of?(klass)
-    superclass = self.class
-    while superclass
-      return true if klass == superclass
-      superclass = superclass.superclass
+      instance
     end
-    false
   end
 end

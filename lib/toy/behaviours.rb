@@ -72,5 +72,26 @@ module Toy
         @method_map ||= {}
       end
     end
+
+    module ClassRelationships
+      def kind_of?(klass)
+        superclass = self.class
+        while superclass
+          return true if klass == superclass
+          superclass = superclass.superclass
+        end
+        false
+      end
+    end
+
+    module Inspection
+      def to_s
+        inspect
+      end
+
+      def inspect
+        "#<#{self.class}>"
+      end
+    end
   end
 end
