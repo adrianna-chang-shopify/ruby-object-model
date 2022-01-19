@@ -32,25 +32,26 @@ module Toy
     end
 
     def new
-      instance = BasicObject.new
+      Instance.new(self)
+    end
+  end
 
-      klass = self
+  class Instance < BasicObject
+    # Object instance methods
+    include Behaviours::InstanceVariables
 
-      singleton_class = (class << instance; self; end)
-      singleton_class.define_method(:class) { klass }
+    # kind_of?
+    include Behaviours::ClassRelationships
 
-      class << instance
-        # Object instance methods
-        include Behaviours::InstanceVariables
+    # to_s and #inspect
+    include Behaviours::Inspection
 
-        # kind_of?
-        include Behaviours::ClassRelationships
+    def initialize(klass)
+      @klass = klass
+    end
 
-        # to_s and #inspect
-        include Behaviours::Inspection
-      end
-
-      instance
+    def class
+      @klass
     end
   end
 end
