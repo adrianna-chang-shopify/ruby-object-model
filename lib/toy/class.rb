@@ -32,7 +32,6 @@ module Toy
       Module
     end
 
-
     def new(superclass = Object)
       instance = BasicObject.new
 
