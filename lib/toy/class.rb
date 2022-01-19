@@ -53,13 +53,8 @@ module Toy
         # kind_of?
         include Behaviours::ClassRelationships
 
-        def to_s
-          inspect
-        end
-
-        def inspect
-          "#<#{self.class}>"
-        end
+        # to_s and #inspect
+        include Behaviours::Inspection
 
         # Class instance methods
         def new
@@ -80,13 +75,8 @@ module Toy
             # kind_of?
             include Behaviours::ClassRelationships
 
-            def to_s
-              inspect
-            end
-
-            def inspect
-              "#<#{self.class}>"
-            end
+            # to_s and #inspect
+            include Behaviours::Inspection
           end
 
           instance

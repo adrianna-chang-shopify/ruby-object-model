@@ -83,5 +83,15 @@ module Toy
         false
       end
     end
+
+    module Inspection
+      def to_s
+        inspect
+      end
+
+      def inspect
+        "#<#{self.class}>"
+      end
+    end
   end
 end
