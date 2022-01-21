@@ -1,8 +1,3 @@
-require "toy/behaviours"
-require "toy/class_instance"
-require "toy/module"
-require "toy/object"
-
 module Toy
   Class = BasicObject.new
 

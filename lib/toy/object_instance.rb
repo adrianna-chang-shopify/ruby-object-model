@@ -1,5 +1,3 @@
-require "toy/behaviours"
-
 module Toy
   class ObjectInstance < BasicObject
     # Object instance methods

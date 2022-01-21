@@ -1,6 +1,4 @@
 require "test_helper"
-require "toy/module"
-require "toy/class"
 
 [::Object, ::Toy].each do |ns|
   describe "Module-like behaviour in the #{ns} namespace" do

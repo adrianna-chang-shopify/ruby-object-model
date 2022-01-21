@@ -1,5 +1,4 @@
 require "test_helper"
-require "toy/class"
 
 [::Object, ::Toy].each do |ns|
   describe "Class-like behaviour in the #{ns} namespace" do
@@ -25,7 +24,7 @@ require "toy/class"
               specify "reading and writing" do
                 @object.instance_variable_set(:@foo, :bar)
                 assert_equal :bar, @object.instance_variable_get(:@foo)
-    
+
                 @object.instance_variable_set(:@foo, :baz)
                 assert_equal :baz, @object.instance_variable_get(:@foo)
               end
@@ -35,7 +34,7 @@ require "toy/class"
               it "returns the names of existing instance variables" do
                 @object.instance_variable_set(:@bar, :foo)
                 @object.instance_variable_set(:@baz, :foo)
-    
+
                 assert_equal [:@bar, :@baz], @object.instance_variables
               end
             end
@@ -55,7 +54,7 @@ require "toy/class"
               it "returns value of instance variable and unsets it" do
                 @object.instance_variable_set(:@bar, :foo)
                 assert @object.instance_variable_defined?(:@bar)
-    
+
                 assert_equal :foo, @object.remove_instance_variable(:@bar)
                 assert_nil @object.instance_variable_get(:@foo)
                 refute @object.instance_variable_defined?(:@foo)

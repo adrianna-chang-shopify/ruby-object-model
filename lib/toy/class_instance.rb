@@ -1,6 +1,3 @@
-require "toy/module_instance"
-require "toy/object_instance"
-
 module Toy
   class ClassInstance < ModuleInstance
     def initialize(klass, superclass)
