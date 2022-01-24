@@ -5,6 +5,8 @@ require "test_helper"
     [[ns::Class, ns::Object]].each do |_Class, _Object|
       describe _Class do
         before do
+          @Class = ns::Class
+          @superclass = _Object
           @class = _Class.new
         end
 
@@ -65,11 +67,11 @@ require "test_helper"
 
         describe "getting a class's superclass" do
           specify "returns the superclass" do
-            assert_equal _Object, @class.superclass
+            assert_equal @superclass, @class.superclass
           end
 
           specify "works with custom superclass" do
-            subclass = _Class.new(@class)
+            subclass = @Class.new(@class)
             assert_equal @class, subclass.superclass
           end
         end

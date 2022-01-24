@@ -5,6 +5,7 @@ require "test_helper"
     [ns::Module, ns::Class].each do |_Module|
       describe _Module do
         before do
+          @class = _Module
           @module = _Module.new
         end
 
@@ -45,7 +46,7 @@ require "test_helper"
             error = assert_raises NameError do
               @module.const_get("FOO")
             end
-            assert_match(/uninitialized constant #<#{_Module}(:.*)?>::FOO/, error.message)
+            assert_match(/uninitialized constant #<#{@class}(:.*)?>::FOO/, error.message)
           end
 
           specify "warns when setting a constant that is already set" do
@@ -55,7 +56,7 @@ require "test_helper"
               @module.const_set("FOO", 42)
             end
 
-            assert_match(/already initialized constant #<#{_Module}(:.*)?>::FOO/, err)
+            assert_match(/already initialized constant #<#{@class}(:.*)?>::FOO/, err)
           end
         end
 

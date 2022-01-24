@@ -5,6 +5,8 @@ require "test_helper"
     [ns::Object, ns::Module, ns::Class].each do |_Object|
       describe _Object do
         before do
+          @Class = ns::Class
+          @class = _Object
           @object = _Object.new
         end
 
@@ -70,30 +72,30 @@ require "test_helper"
 
         describe "getting an instance's class" do
           specify "returns the class" do
-            assert_equal _Object, @object.class
+            assert_equal @class, @object.class
           end
         end
 
         describe "#kind_of?" do
-          it "returns true for #{_Object}" do
-            assert @object.kind_of?(_Object)
+          it "returns true for #{@class}" do
+            assert @object.kind_of?(@class)
           end
 
-          it "returns false for non-#{_Object}" do
-            other_class = ns::Class.new
+          it "returns false for non-#{@class}" do
+            other_class = @Class.new
             refute @object.kind_of?(other_class)
           end
         end
 
         describe "#inspect" do
           it "inspects the object" do
-            assert_match(/#<#{_Object}(:.*)?>/, @object.inspect)
+            assert_match(/#<#{@class}(:.*)?>/, @object.inspect)
           end
         end
 
         describe "#to_s" do
           it "returns Stringified version of the object" do
-            assert_match(/#<#{_Object}(:.*)?>/, @object.to_s)
+            assert_match(/#<#{@class}(:.*)?>/, @object.to_s)
           end
         end
       end
