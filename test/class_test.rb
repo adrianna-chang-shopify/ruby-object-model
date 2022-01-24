@@ -74,10 +74,13 @@ end
 
 [::Object, ::Toy].each do |ns|
   describe "in the #{ns} namespace" do
+    before do
+      @Class = ns::Class
+    end
+
     [[ns::Class, ns::Object]].each do |singleton, _Object|
       describe singleton do
         before do
-          @Class = ns::Class
           @superclass = _Object
           @class = singleton.new
         end
