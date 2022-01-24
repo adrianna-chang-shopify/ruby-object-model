@@ -1,5 +1,3 @@
-require "toy/behaviours"
-
 module Toy
   Module = BasicObject.new
 
@@ -32,29 +30,7 @@ module Toy
     end
 
     def new
-      instance = BasicObject.new
-
-      klass = self
-
-      singleton_class = (class << instance; self; end)
-      singleton_class.define_method(:class) { klass }
-
-      class << instance
-        # Object instance methods
-        include Behaviours::InstanceVariables
-
-        # Module instance methods
-        include Behaviours::Constants
-        include Behaviours::Methods
-
-        # kind_of?
-        include Behaviours::ClassRelationships
-
-        # to_s and #inspect
-        include Behaviours::Inspection
-      end
-
-      instance
+      ModuleInstance.new(self)
     end
   end
 end
