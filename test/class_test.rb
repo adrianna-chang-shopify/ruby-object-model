@@ -78,10 +78,10 @@ end
       @Class = ns::Class
     end
 
-    [[ns::Class, ns::Object]].each do |singleton, _Object|
+    [ns::Class].each do |singleton|
       describe singleton do
         before do
-          @superclass = _Object
+          @superclass = ns::Object
           @class = singleton.new
         end
 
