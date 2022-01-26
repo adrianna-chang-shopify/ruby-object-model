@@ -1,6 +1,6 @@
 module Toy
   class ClassInstance < ModuleInstance
-    def initialize(klass, superclass)
+    def initialize(klass: nil, superclass: nil)
       super(klass)
       @superclass = superclass
     end

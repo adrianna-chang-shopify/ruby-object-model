@@ -30,7 +30,7 @@ module Toy
     end
 
     def new(superclass = Object)
-      ClassInstance.new(self, superclass)
+      ClassInstance.new(klass: self, superclass: superclass)
     end
   end
 end
