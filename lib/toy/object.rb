@@ -30,7 +30,7 @@ module Toy
     end
 
     def new
-      ObjectInstance.new(self)
+      ObjectInstance.new(klass: self)
     end
   end
 end
