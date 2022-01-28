@@ -9,7 +9,7 @@ module Toy
     # to_s and #inspect
     include Behaviours::Inspection
 
-    def initialize(klass)
+    def initialize(klass: nil)
       @klass = klass
     end
 

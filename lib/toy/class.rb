@@ -1,22 +1,8 @@
 module Toy
-  Class = BasicObject.new
+  Class = ClassInstance.new(superclass: Module)
 
   # Open up singleton class of Toy::Class
   class << Class
-    # Object instance methods, because the Class singleton is an object yo!
-    include Behaviours::InstanceVariables
-
-    # Module instance methods, because the Class singleton is a module yo!
-    include Behaviours::Constants
-    include Behaviours::Methods
-
-    # kind_of?
-    include Behaviours::ClassRelationships
-
-    def to_s
-      inspect
-    end
-
     def inspect
       "Toy::Class"
     end
@@ -25,12 +11,8 @@ module Toy
       Class
     end
 
-    def superclass
-      Module
-    end
-
     def new(superclass = Object)
-      ClassInstance.new(self, superclass)
+      ClassInstance.new(klass: self, superclass: superclass)
     end
   end
 end
