@@ -77,6 +77,36 @@ end
 
 [::Object, ::Toy].each do |ns|
   describe "in the #{ns} namespace" do
+    before do
+      @Class = ns::Class
+      @Module = ns::Module
+      @Object = ns::Object
+    end
+
+    describe "Module singleton behaviour" do
+      specify "#class is Class" do
+        assert_equal @Class, @Module.class
+      end
+
+      specify "#superclass is Object" do
+        assert_equal @Object, @Module.superclass
+      end
+
+      describe "#kind_of?" do
+        specify "is a kind of Object" do
+          assert_kind_of @Object, @Module
+        end
+
+        specify "is a kind of Module" do
+          assert_kind_of @Module, @Module
+        end
+
+        specify "is a kind of Class" do
+          assert_kind_of @Class, @Module
+        end
+      end
+    end
+
     [ns::Module, ns::Class].each do |singleton|
       describe singleton do
         before do

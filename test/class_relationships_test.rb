@@ -10,10 +10,6 @@ require "test_helper"
 
     describe "relationships between Object, Module and Class" do
       describe "#class" do
-        specify "Module’s class is Class" do
-          assert_equal @Class, @Class.class
-        end
-
         specify "Class’s class is Class" do
           assert_equal @Class, @Class.class
         end
@@ -23,28 +19,9 @@ require "test_helper"
         specify "Class’s superclass is Module" do
           assert_equal @Module, @Class.superclass
         end
-
-        specify "Module’s superclass is Object" do
-          assert_equal @Object, @Module.superclass
-        end
       end
 
       describe "#kind_of?" do
-
-        describe "Module" do
-          specify "Module is a kind of Object" do
-            assert_kind_of @Object, @Module
-          end
-
-          specify "Module is a kind of Module" do
-            assert_kind_of @Module, @Module
-          end
-
-          specify "Module is a kind of Class" do
-            assert_kind_of @Class, @Module
-          end
-        end
-
         describe "Class" do
           specify "Class is a kind of Object" do
             assert_kind_of @Object, @Class
