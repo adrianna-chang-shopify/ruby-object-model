@@ -3,8 +3,8 @@ module Toy
 
   # Open up singleton class of Toy::Class
   class << Class
-    def inspect
-      "Toy::Class"
+    def name
+      "Class"
     end
 
     def class

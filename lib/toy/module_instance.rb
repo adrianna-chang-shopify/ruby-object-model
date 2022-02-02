@@ -1,5 +1,15 @@
 module Toy
   class ModuleInstance < ObjectInstance
+    # Module and class instances can have names, object instances can't
+    def inspect
+      return super unless name
+      name
+    end
+
+    def name
+      nil
+    end
+
     def const_get(name)
       name = name.to_sym
       ::Kernel.raise ::NameError, "uninitialized constant #{inspect}::#{name}" unless constant_map.key?(name)
