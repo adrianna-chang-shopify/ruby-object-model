@@ -1,13 +1,41 @@
 module Toy
   class ObjectInstance < BasicObject
-    # Object instance methods
-    include Behaviours::InstanceVariables
+    def instance_variable_get(name)
+      ivar_map[name.to_sym]
+    end
 
-    # kind_of?
-    include Behaviours::ClassRelationships
+    def instance_variable_set(name, value)
+      ivar_map[name.to_sym] = value
+    end
 
-    # to_s and #inspect
-    include Behaviours::Inspection
+    def instance_variables
+      ivar_map.keys
+    end
+
+    def instance_variable_defined?(name)
+      ivar_map.has_key?(name.to_sym)
+    end
+
+    def remove_instance_variable(name)
+      ivar_map.delete(name.to_sym)
+    end
+
+    def kind_of?(klass)
+      superclass = self.class
+      while superclass
+        return true if klass == superclass
+        superclass = superclass.superclass
+      end
+      false
+    end
+
+    def to_s
+      inspect
+    end
+
+    def inspect
+      "#<#{self.class}>"
+    end
 
     def initialize(klass: nil)
       @klass = klass
@@ -15,6 +43,12 @@ module Toy
 
     def class
       @klass
+    end
+
+    private
+
+    def ivar_map
+      @ivar_map ||= {}
     end
   end
 end
