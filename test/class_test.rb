@@ -76,6 +76,32 @@ end
   describe "in the #{ns} namespace" do
     before do
       @Class = ns::Class
+      @Module = ns::Module
+      @Object = ns::Object
+    end
+
+    describe "Class singleton behaviour" do
+      specify "#class is Class" do
+        assert_equal @Class, @Class.class
+      end
+
+      specify "#superclass is Module" do
+        assert_equal @Module, @Class.superclass
+      end
+
+      describe "#kind_of?" do
+        specify "is a kind of Object" do
+          assert_kind_of @Object, @Class
+        end
+
+        specify "is a kind of Module" do
+          assert_kind_of @Module, @Class
+        end
+
+        specify "is a kind of Class" do
+          assert_kind_of @Class, @Class
+        end
+      end
     end
 
     [ns::Class].each do |singleton|
