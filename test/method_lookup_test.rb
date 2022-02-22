@@ -18,18 +18,17 @@ class MethodLookupTest
         end
 
         describe "the object returned by #method" do
-          specify "knows the module or class that defined the method" do
+          before do
             body = proc { puts "Hello World!" }
             @class.define_method(:my_method, body)
+          end
 
+          specify "knows the module or class that defined the method" do
             object = @class.new
             assert_equal(@class, object.method(:my_method).owner)
           end
 
           specify "knows when a superclass defined the method" do
-            body = proc { puts "Hello World!" }
-            @class.define_method(:my_method, body)
-
             subclass = @Class.new(@class)
 
             object = subclass.new
