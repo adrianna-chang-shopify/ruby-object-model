@@ -34,6 +34,15 @@ class MethodLookupTest
             object = subclass.new
             assert_equal(@class, object.method(:my_method).owner)
           end
+
+          specify "when a subclass overrides a superclass's method, knows the subclass defined it" do
+            subclass = @Class.new(@class)
+            body = proc { puts "I override my parent's method!" }
+            subclass.define_method(:my_method, body)
+
+            object = subclass.new
+            assert_equal(subclass, object.method(:my_method).owner)
+          end
         end
       end
     end
