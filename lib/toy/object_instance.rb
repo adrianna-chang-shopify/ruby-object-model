@@ -45,6 +45,23 @@ module Toy
       @klass
     end
 
+    def method(selector)
+      superclass = self.class
+      while superclass
+        return Method.new(superclass) if superclass.instance_methods.include?(selector)
+        superclass = superclass.superclass
+      end
+      ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.class.inspect}'"
+    end
+
+    class Method < BasicObject
+      def initialize(owner)
+        @owner = owner
+      end
+
+      attr_reader :owner
+    end
+
     private
 
     def ivar_map
