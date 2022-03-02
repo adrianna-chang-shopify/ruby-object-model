@@ -3,6 +3,19 @@ require "test_helper"
 class MixinTest
   [::Object, ::Toy].each do |ns|
     describe "in the #{ns} namespace" do
+      describe "#included_modules" do
+        it "returns list of modules that have been mixed into module" do
+          m = ns::Module.new
+          c = ns::Class.new
+          c.include(m)
+
+          assert_includes(c.included_modules, m)
+        end
+      end
+
+      describe "including a module in a module" do
+      end
+
       describe "including a module in a class" do
         specify "define module with method, include module in new class, instantiate class" do
           m = ns::Module.new
