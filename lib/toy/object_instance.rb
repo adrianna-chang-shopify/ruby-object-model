@@ -47,13 +47,17 @@ module Toy
 
     def method(selector)
       superclass = self.class
-      # Check mixed-in Modules to see if they define the selector
-      superclass.included_modules.each do |mixin|
-        return Method.new(mixin) if mixin.instance_methods.include?(selector)
-      end
-      # Check up the superclass hierarchy to see if any of them define the selector
+
+      # Check up the superclass hierarchy to see if any of them define the selector.
+      # Check the superclasses to see if any of their mixins define the selector.
       while superclass
         return Method.new(superclass) if superclass.instance_methods.include?(selector)
+
+        # Check mixed-in Modules to see if they define the selector
+        superclass.included_modules.each do |mixin|
+          return Method.new(mixin) if mixin.instance_methods.include?(selector)
+        end
+
         superclass = superclass.superclass
       end
       ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.class.inspect}'"
