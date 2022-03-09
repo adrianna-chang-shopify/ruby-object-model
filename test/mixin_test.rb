@@ -84,6 +84,35 @@ class MixinTest
             assert_equal(module_b, o.method(:my_method).owner)
           end
         end
+
+        describe "including the same module twice" do
+          it "only adds module to list of included_modules once" do
+            m = ns::Module.new
+            m.define_method(:my_method, proc { "Hello world!" })
+
+            c = ns::Class.new
+            c.include(m)
+            c.include(m)
+
+            assert_equal(1, c.included_modules.select { |mod| mod == m }.size)
+          end
+
+          it "doesn't affect method lookup" do
+            module_a = ns::Module.new
+            module_a.define_method(:my_method, proc { "Called from module A" })
+            module_b = ns::Module.new
+            module_b.define_method(:my_method, proc { "Called from module B" })
+
+            c = ns::Class.new
+            c.include(module_a)
+            c.include(module_b)
+            c.include(module_a)
+
+            o = c.new
+
+            assert_equal(module_b, o.method(:my_method).owner)
+          end
+        end
       end
     end
   end
