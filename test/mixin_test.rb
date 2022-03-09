@@ -67,6 +67,23 @@ class MixinTest
 
           assert_equal(c, o.method(:my_method).owner)
         end
+
+        describe "when a class includes multiple modules that define a method" do
+          it "uses the behaviour defined in the most recently included module" do
+            module_a = ns::Module.new
+            module_a.define_method(:my_method, proc { "Called from module A" })
+            module_b = ns::Module.new
+            module_b.define_method(:my_method, proc { "Called from module B" })
+
+            c = ns::Class.new
+            c.include(module_a)
+            c.include(module_b)
+
+            o = c.new
+
+            assert_equal(module_b, o.method(:my_method).owner)
+          end
+        end
       end
     end
   end

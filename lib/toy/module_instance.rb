@@ -40,7 +40,7 @@ module Toy
     end
 
     def include(mod)
-      included_modules << mod
+      included_modules.prepend(mod)
     end
 
     def included_modules
