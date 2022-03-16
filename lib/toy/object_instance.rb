@@ -56,6 +56,10 @@ module Toy
         # Check mixed-in Modules to see if they define the selector
         superclass.included_modules.each do |mixin|
           return Method.new(mixin) if mixin.instance_methods.include?(selector)
+
+          mixin.included_modules.each do |moar_mixins|
+            return Method.new(moar_mixins) if moar_mixins.instance_methods.include?(selector)
+          end
         end
 
         superclass = superclass.superclass

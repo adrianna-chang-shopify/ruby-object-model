@@ -113,6 +113,23 @@ class MixinTest
             assert_equal(module_b, o.method(:my_method).owner)
           end
         end
+
+        describe "including a module that includes other modules" do
+          it "defines behaviour from transitively included modules in class" do
+            module_a = ns::Module.new
+            module_b = ns::Module.new
+            module_b.define_method(:my_method, proc { "Called from module B" })
+
+            module_a.include(module_b)
+
+            c = ns::Class.new
+            c.include(module_a)
+
+            o = c.new
+
+            assert_equal(module_b, o.method(:my_method).owner)
+          end
+        end
       end
     end
   end
