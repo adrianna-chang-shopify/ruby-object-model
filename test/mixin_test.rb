@@ -129,6 +129,95 @@ class MixinTest
 
             assert_equal(module_b, o.method(:my_method).owner)
           end
+
+          it "handles many levels of module inclusion" do
+            module_a = ns::Module.new
+            module_b = ns::Module.new
+            module_c = ns::Module.new
+            module_c.define_method(:my_method, proc { "Called from module C" })
+
+            module_b.include(module_c)
+            module_a.include(module_b)
+
+            c = ns::Class.new
+            c.include(module_a)
+
+            o = c.new
+
+            assert_equal(module_c, o.method(:my_method).owner)
+          end
+
+          specify "include order is not important" do
+            module_a = ns::Module.new
+            module_b = ns::Module.new
+            module_c = ns::Module.new
+            module_c.define_method(:my_method, proc { "Called from module C" })
+
+            module_a.include(module_b)
+            module_b.include(module_c)
+
+            c = ns::Class.new
+            c.include(module_a)
+
+            o = c.new
+
+            assert_equal(module_c, o.method(:my_method).owner)
+          end
+
+          # FOR NEXT TEST CASE
+          #
+          # module A
+          #   include B
+          # end
+
+          # module B
+          #   include C
+          # end
+
+          # module C
+          #   def my_method; end
+          # end
+
+          # module D
+          #   include E
+          # end
+
+          # module E
+          #   def my_method; end
+          # end
+
+          # class Foo
+          #   include A
+          #   include D
+          # end
+
+          specify "include order matters when there are method conflicts in mixins" do
+            module_a = ns::Module.new
+            module_b = ns::Module.new
+            module_c = ns::Module.new
+            module_c.define_method(:my_method, proc { "Called from module C" })
+
+            module_d = ns::Module.new
+            module_e = ns::Module.new
+            module_e.define_method(:my_method, proc { "Called from module E" })
+
+            module_a.include(module_b)
+            module_b.include(module_c)
+
+            module_d.include(module_e)
+
+            c = ns::Class.new
+            c.include(module_d)
+            c.include(module_a)
+
+            o = c.new
+
+            # owner is module_c since it's "root module" (module A)
+            # was included last on the class. This is the case even though
+            # module C is at a "deeper level" in the tree compared to module E.
+            # DFS
+            assert_equal(module_c, o.method(:my_method).owner)
+          end
         end
       end
     end
