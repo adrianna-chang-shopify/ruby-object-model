@@ -49,19 +49,13 @@ module Toy
       superclass = self.class
 
       # Check up the superclass hierarchy to see if any of them define the selector.
-      # Check the superclasses to see if any of their mixins define the selector.
       while superclass
-        return Method.new(superclass) if superclass.instance_methods.include?(selector)
+        # Check mixed-in modules to see if they define the selector
+        method = mixin_ancestry_search(superclass, selector)
+        return method if method
 
-        # Check mixed-in Modules to see if they define the selector
-        superclass.included_modules.each do |mixin|
-          return Method.new(mixin) if mixin.instance_methods.include?(selector)
-
-          mixin.included_modules.each do |moar_mixins|
-            return Method.new(moar_mixins) if moar_mixins.instance_methods.include?(selector)
-          end
-        end
-
+        # The current class did not define the method, nor did any of its mixins.
+        # Move up to the superclass to see if it, or any of its modules, contain the method.
         superclass = superclass.superclass
       end
       ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.class.inspect}'"
@@ -79,6 +73,18 @@ module Toy
 
     def ivar_map
       @ivar_map ||= {}
+    end
+
+    def mixin_ancestry_search(mixin, selector)
+      return Method.new(mixin) if mixin.instance_methods.include?(selector)
+
+      mixin.included_modules.each do |nested_mixin|
+        method = mixin_ancestry_search(nested_mixin, selector)
+        return method if method
+      end
+
+      # No method match was found at this level in the tree, return nil
+      nil
     end
   end
 end
