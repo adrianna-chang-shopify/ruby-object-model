@@ -39,6 +39,22 @@ module Toy
       method_map.keys.map(&:to_sym)
     end
 
+    def instance_method(selector)
+      selector = selector.to_sym
+
+      current_class = self
+      while current_class
+        # Check mixed-in modules to see if they define the selector
+        method = mixin_ancestry_search(current_class, selector)
+        return method if method
+
+        # The current class did not define the method, nor did any of its mixins.
+        # Move up to the superclass to see if it, or any of its modules, contain the method.
+        current_class = current_class.superclass
+      end
+      ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.inspect}'"
+    end
+
     def include(mod)
       included_modules.prepend(mod) unless included_modules.include?(mod)
     end
@@ -55,6 +71,18 @@ module Toy
 
     def method_map
       @method_map ||= {}
+    end
+
+    def mixin_ancestry_search(mixin, selector)
+      return Method.new(mixin) if mixin.instance_methods.include?(selector)
+
+      mixin.included_modules.each do |nested_mixin|
+        method = mixin_ancestry_search(nested_mixin, selector)
+        return method if method
+      end
+
+      # No method match was found at this level in the tree, return nil
+      nil
     end
   end
 end
