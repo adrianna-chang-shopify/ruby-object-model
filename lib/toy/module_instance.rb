@@ -39,6 +39,14 @@ module Toy
       method_map.keys.map(&:to_sym)
     end
 
+    def include(mod)
+      included_modules.prepend(mod) unless included_modules.include?(mod)
+    end
+
+    def included_modules
+      @included_modules ||= []
+    end
+
     private
 
     def constant_map
