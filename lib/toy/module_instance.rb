@@ -45,9 +45,11 @@ module Toy
       included_modules.each do |nested_mixin|
         method = nested_mixin.instance_method(selector)
         return method if method
+      rescue ::NameError
+        nil
       end
 
-      if superclass
+      if self.class == Class && superclass
         superclass.instance_method(selector)
       else
         ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.inspect}'"
