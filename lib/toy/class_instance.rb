@@ -9,6 +9,12 @@ module Toy
       @superclass
     end
 
+    def ancestors
+      class_ancestors = super.uniq(&:__id__)
+      class_ancestors += superclass.ancestors if superclass
+      class_ancestors
+    end
+
     # Class instance methods
     def new
       ObjectInstance.new(klass: self)

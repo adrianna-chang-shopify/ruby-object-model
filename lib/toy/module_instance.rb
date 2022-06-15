@@ -39,6 +39,13 @@ module Toy
       method_map.keys.map(&:to_sym)
     end
 
+    # Tom's seed: Maybe give modules the concept of a "superclass" -ie. parent
+    # Instead of including modules => pushing into an array, maybe build linked list of parents
+
+    def ancestors
+      [self, *included_modules.flat_map(&:ancestors)]
+    end
+
     def instance_method(selector)
       return Method.new(self) if instance_methods.include?(selector)
 
