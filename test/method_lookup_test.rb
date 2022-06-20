@@ -8,6 +8,48 @@ class MethodLookupTest
         @class = @Class.new
       end
 
+      # class Z; end
+
+      # class Y < Z
+      #   include A
+      # end
+
+      # module A
+      #   include B
+      # end
+
+      # module B
+      #   include C
+      #   include D
+      # end
+
+      # module C
+      #   include D
+      # end
+
+      # module D; end
+
+      describe "#ancestors" do
+        it "returns list of ancestors" do
+          module_a = ns::Module.new
+          module_b = ns::Module.new
+          module_c = ns::Module.new
+          module_d = ns::Module.new
+
+          module_a.include(module_b)
+          module_b.include(module_c)
+
+          module_b.include(module_d)
+          module_c.include(module_d)
+
+          class_z = @Class.new
+          class_z.include(module_a)
+
+          expected_ancestors = [class_z, module_a, module_b, module_d, module_c, ns::Object]
+          assert_equal expected_ancestors, class_z.ancestors.take(expected_ancestors.length)
+        end
+      end
+
       describe "method lookup behaviour" do
         specify "#method raises NameError when object doesn't define selector method" do
           object = @class.new
