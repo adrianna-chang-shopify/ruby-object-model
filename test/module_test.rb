@@ -71,6 +71,66 @@ module ModuleBehaviourTests
           assert_includes @module.instance_methods, :my_method
         end
       end
+
+      describe "#instance_method" do
+        it "returns a method defined on the module" do
+          body = proc { puts "Hello World!" }
+          @module.define_method(:my_method, body)
+
+          assert @module.instance_method(:my_method)
+        end
+
+        it "returns a method defined on a class's superclass" do
+          klass = @Class.new
+          body = proc { puts "Hello World!" }
+          klass.define_method(:my_method, body)
+
+          subclass = @Class.new(klass)
+          assert subclass.instance_method(:my_method)
+        end
+
+        it "returns a method mixed-in to the current module" do
+          body = proc { puts "Hello World!" }
+          mixin = @Module.new
+          mixin.define_method(:my_method, body)
+
+          klass = @Class.new
+          klass.include(mixin)
+
+          assert klass.instance_method(:my_method)
+        end
+
+        it "raises if method cannot be found" do
+          error = assert_raises(NameError) do
+            @module.instance_method(:unknown_method)
+          end
+          assert_match(/undefined method `unknown_method'/, error.message)
+        end
+
+        # class A
+        #   def some_method; end
+        # end
+
+        # module B; end
+
+        # class C < A
+        #   include B
+        # end
+
+        # C.instance_method(:some_method)
+
+        it "returns a method when class inheritance is combined with mixins" do
+          class_a = @Class.new
+          class_a.define_method(:my_method, proc { puts "Hello World!" })
+
+          module_b = @Module.new
+
+          class_c = @Class.new(class_a)
+          class_c.include(module_b)
+
+          assert class_c.instance_method(:my_method)
+        end
+      end
     end
   end
 end
@@ -112,6 +172,8 @@ end
         before do
           @class = singleton
           @module = singleton.new
+          @Class = ns::Class
+          @Module = ns::Module
         end
 
         include ModuleBehaviourTests
