@@ -9,15 +9,17 @@ module Toy
       @superclass
     end
 
-    # This is still problematic if there's duplication between this class's ancestors
-    # and its superclass (and its ancestors)
-    # Does this fix it?
-    # class_ancestors = super
-    # class_ancestors += superclass.ancestors if superclass
-    # class_ancestors.uniq { |ancestor| ancestor.__id__ }
+    # I think I need to refactor this to use linked list style
+    # so that we can insert the superclass ahead of the class, prior
+    # to the module
     def ancestors
-      class_ancestors = super.uniq(&:__id__)
-      class_ancestors += superclass.ancestors if superclass
+      class_ancestors = super
+      if superclass
+        ::Kernel.puts "class ancestors: #{class_ancestors}"
+
+        add = superclass.ancestors - class_ancestors
+        class_ancestors += add
+      end
       class_ancestors
     end
 

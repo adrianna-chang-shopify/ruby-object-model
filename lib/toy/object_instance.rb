@@ -49,6 +49,10 @@ module Toy
       self.class.instance_method(selector)
     end
 
+    def eql?(other)
+      self.__id__ == other.__id__
+    end
+
     class Method < BasicObject
       def initialize(owner)
         @owner = owner

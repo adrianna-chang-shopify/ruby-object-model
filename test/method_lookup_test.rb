@@ -48,6 +48,47 @@ class MethodLookupTest
           expected_ancestors = [class_z, module_a, module_b, module_d, module_c, ns::Object]
           assert_equal expected_ancestors, class_z.ancestors.take(expected_ancestors.length)
         end
+
+        # module A; end
+
+        # class Z
+        #   include A
+        # end
+
+        # class Y < Z
+        #   include A
+        # end
+
+        it "dedups ancestor list for classes" do
+          module_a = ns::Module.new
+          def module_a.name; "module_a"; end
+
+          class_y = @Class.new
+          def class_y.name; "class_y"; end
+
+          class_z = @Class.new(class_y)
+          def class_z.name; "class_z"; end
+
+          class_y.include(module_a)
+          class_z.include(module_a)
+
+          expected_ancestors = [class_z, class_y, module_a, ns::Object]
+          assert_equal expected_ancestors, class_z.ancestors.take(expected_ancestors.length)
+        end
+
+        it "dedups ancestor list for classes, ordering matters" do
+          # Demonstrate that order matters here
+          module_a = ns::Module.new
+
+          class_y = @Class.new
+          class_z = @Class.new(class_y)
+
+          class_z.include(module_a)
+          class_y.include(module_a)
+
+          expected_ancestors = [class_z, module_a, class_y, module_a, ns::Object]
+          assert_equal expected_ancestors, class_z.ancestors.take(expected_ancestors.length)
+        end
       end
 
       describe "method lookup behaviour" do

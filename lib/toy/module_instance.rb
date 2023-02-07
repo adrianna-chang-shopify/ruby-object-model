@@ -42,8 +42,9 @@ module Toy
     # Tom's seed: Maybe give modules the concept of a "superclass" -ie. parent
     # Instead of including modules => pushing into an array, maybe build linked list of parents
 
+    # Returns a list of modules included/prepended in mod (including mod itself).
     def ancestors
-      [self, *included_modules.flat_map(&:ancestors)]
+      [self, *included_modules]
     end
 
     def instance_method(selector)
@@ -64,11 +65,16 @@ module Toy
     end
 
     def include(mod)
-      included_modules.prepend(mod) unless included_modules.include?(mod)
+      local_included_modules.prepend(mod) unless included_modules.include?(mod)
     end
 
+    # Returns the list of modules included in mod or one of mod’s ancestors.
     def included_modules
-      @included_modules ||= []
+      included_modules = local_included_modules
+      local_included_modules.each do |mod|
+        included_modules += mod.included_modules
+      end
+      included_modules
     end
 
     private
@@ -79,6 +85,11 @@ module Toy
 
     def method_map
       @method_map ||= {}
+    end
+
+    # Track modules included directly on this module
+    def local_included_modules
+      @local_included_modules ||= []
     end
   end
 end
