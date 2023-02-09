@@ -14,7 +14,34 @@ class MixinTest
       end
 
       describe "including a module in a module" do
-        # TO DO - ensure we test this behaviour against Module
+        it "adds the mixin to the module's included_modules" do
+          module_a = ns::Module.new
+          module_a.define_method(:my_method, proc { puts "Hello World!" })
+
+          module_b = ns::Module.new
+          module_b.include(module_a)
+
+          assert_includes(module_b.included_modules, module_a)
+        end
+
+        it "adds module to list of included modules even if another mixin already includes that module" do
+          module_a = ns::Module.new
+          def module_a.name; "module_a"; end
+
+          module_b = ns::Module.new
+          def module_b.name; "module_b"; end
+
+          module_c = ns::Module.new
+          def module_c.name; "module_c"; end
+
+          module_b.include(module_c)
+
+          module_a.include(module_b)
+          module_a.include(module_c)
+
+          assert_equal([module_b, module_c], module_a.included_modules)
+          assert_equal([module_a, module_b, module_c], module_a.ancestors)
+        end
       end
 
       describe "including a module in a class" do

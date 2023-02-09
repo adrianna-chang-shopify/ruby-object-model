@@ -63,13 +63,43 @@ module Toy
       end
     end
 
+    # Returns the list of modules included or prepended in mod or one of mod’s ancestors.
     def include(mod)
-      included_modules.prepend(mod) unless included_modules.include?(mod)
+      # Avoid including module that already exists in the hierarchy
+      return if included_modules.include?(mod)
+
+      previous_superclass_ptr = superclass_ptr
+      # Point the superclass_pointer to the module being included
+      self.superclass_ptr = mod
+
+      return unless previous_superclass_ptr
+
+      # Superclass pointer at end of hierarchy for module being included needs to point to previous superclass pointer
+      ptr = mod
+      while ptr && ptr.superclass_ptr
+        ptr = ptr.superclass_ptr
+      end
+
+      ptr.superclass_ptr = previous_superclass_ptr
     end
 
+    # Traverse inclusion tree, flattening (remove duplicates / cycles)
     def included_modules
-      @included_modules ||= []
+      ptr = superclass_ptr
+      included_modules = [ptr]
+
+      while ptr && ptr.superclass_ptr do
+        ptr = ptr.superclass_ptr
+        break if included_modules.include?(ptr)
+        included_modules << ptr
+      end
+      included_modules.compact
     end
+
+    # Unlike a true superclass, the superclass_ptr is a pointer to the object that sits
+    # above this module on the hierarchy. This is a module or a class.
+    # This is modelled after the way Ruby works internally.
+    attr_accessor :superclass_ptr
 
     private
 
