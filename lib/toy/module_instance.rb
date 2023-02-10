@@ -39,37 +39,47 @@ module Toy
       method_map.keys.map(&:to_sym)
     end
 
-    # Tom's seed: Maybe give modules the concept of a "superclass" -ie. parent
-    # Instead of including modules => pushing into an array, maybe build linked list of parents
-
     def ancestors
-      [self, *included_modules.flat_map(&:ancestors)]
+      [self] + traverse_ancestors
     end
 
     def instance_method(selector)
       return Method.new(self) if instance_methods.include?(selector)
 
-      included_modules.each do |nested_mixin|
-        method = nested_mixin.instance_method(selector)
+      traverse_ancestors.each do |nested_module|
+        method = nested_module.instance_method(selector)
         return method if method
       rescue ::NameError
         nil
       end
-
-      if self.class == Class && superclass
-        superclass.instance_method(selector)
-      else
-        ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.inspect}'"
-      end
+      ::Kernel.raise ::NameError, "undefined method `#{selector}' for class `#{self.inspect}'"
     end
 
+    # Returns the list of modules included or prepended in mod or one of mod’s ancestors.
     def include(mod)
-      included_modules.prepend(mod) unless included_modules.include?(mod)
+      # Avoid including module that already exists in the hierarchy
+      return if ancestors.include?(mod)
+
+      previous_superclass_ptr = superclass_ptr
+      # Point the superclass_pointer to the module being included
+      self.superclass_ptr = mod
+
+      return unless previous_superclass_ptr
+
+      # Superclass pointer at end of hierarchy for module being included needs to point to previous superclass pointer
+      module_at_end_of_hierarchy = mod.ancestors.last
+      module_at_end_of_hierarchy.superclass_ptr = previous_superclass_ptr
     end
 
+    # Traverse inclusion tree, flattening (remove duplicates / cycles)
     def included_modules
-      @included_modules ||= []
+      traverse_ancestors.reject { |ancestor| ancestor.class == Class}
     end
+
+    # Unlike a true superclass, the superclass_ptr is a pointer to the object that sits
+    # above this module on the hierarchy. This is a module or a class.
+    # This is modelled after the way Ruby works internally.
+    attr_accessor :superclass_ptr
 
     private
 
@@ -79,6 +89,18 @@ module Toy
 
     def method_map
       @method_map ||= {}
+    end
+
+    def traverse_ancestors
+      ptr = superclass_ptr
+      ancestors = ptr ? [ptr] : []
+
+      while ptr && ptr.superclass_ptr do
+        ptr = ptr.superclass_ptr
+        break if ancestors.include?(ptr) # Avoid cycles
+        ancestors << ptr
+      end
+      ancestors
     end
   end
 end
