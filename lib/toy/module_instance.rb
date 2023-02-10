@@ -57,8 +57,6 @@ module Toy
 
     # Returns the list of modules included or prepended in mod or one of mod’s ancestors.
     def include(mod)
-      ::Kernel.puts("Including #{mod} in #{self}")
-      ::Kernel.puts("Do ancestors already include #{mod}? #{ancestors.include?(mod)}")
       # Avoid including module that already exists in the hierarchy
       return if ancestors.include?(mod)
 
@@ -69,13 +67,8 @@ module Toy
       return unless previous_superclass_ptr
 
       # Superclass pointer at end of hierarchy for module being included needs to point to previous superclass pointer
-      ptr = mod
-      while ptr && ptr.superclass_ptr
-        ptr = ptr.superclass_ptr
-      end
-
-      ::Kernel.puts("Setting #{ptr.superclass_ptr} to #{previous_superclass_ptr}")
-      ptr.superclass_ptr = previous_superclass_ptr
+      module_at_end_of_hierarchy = mod.ancestors.last
+      module_at_end_of_hierarchy.superclass_ptr = previous_superclass_ptr
     end
 
     # Traverse inclusion tree, flattening (remove duplicates / cycles)
